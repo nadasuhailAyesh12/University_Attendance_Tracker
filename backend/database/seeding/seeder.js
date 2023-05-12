@@ -8,6 +8,8 @@ const seedData = async () => {
     await db.any(new QueryFile(fullPath, { minify: true }));
 };
 
+seedData();
+
 module.exports = seedData;
 
 

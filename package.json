@@ -4,10 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "node backend/database/build.sql",
     "dev": " cross-env NODE_ENV=development nodemon backend/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
-    
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "seeder": "node  backend/database/seeding/seeder.js"
   },
   "repository": {
     "type": "git",
@@ -20,7 +19,7 @@
   },
   "homepage": "https://github.com/nadasuhailAyesh12/planning#readme",
   "dependencies": {
-    "bcrypt": "^5.1.0",
+    "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.6",
     "cross-env": "^7.0.3",
     "dotenv": "^16.0.3",

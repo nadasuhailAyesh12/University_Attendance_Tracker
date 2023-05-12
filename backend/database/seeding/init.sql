@@ -6,7 +6,7 @@ CREATE TABLE
     users(
         ID Integer  primary key ,
         name varchar(20),
-        password text not null,
+        password  text  not null,
          role text 
     );
 
