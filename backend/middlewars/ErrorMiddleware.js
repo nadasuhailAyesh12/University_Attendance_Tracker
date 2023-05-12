@@ -1,4 +1,6 @@
 const { node_env } = require("../config/enviroment");
+const ErrorHandler = require("../helpers/ErrorHandlerHelper");
+
 
 module.exports = (err, req, res, next) => {
     err.message = err.message || "internal server error";
@@ -20,9 +22,15 @@ module.exports = (err, req, res, next) => {
         const message = `duplicate ${Object.keys(err.keyValue)} entered`;
         err = new ErrorHandler(message, 409);
     }
+    if (err.query) {
+        if ((err.query.name === "login" || err.query.name === 'getUserByID' || err.query.name === 'checkPassword' && err.code === 0)) {
+            const message = `User not found`;
+            err = new ErrorHandler(message, 404);
+        }
+    }
     res.status(err.statusCode).json({
         success: false,
-        message: err.message
+        message: err.message,
     });
 }
 // };
