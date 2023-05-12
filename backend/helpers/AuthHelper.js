@@ -1,6 +1,6 @@
 const util = require('util');
 
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const config = require('../config/enviroment');
 
@@ -35,7 +35,7 @@ const verifyToken = (token) => {
 }
 
 const hashPassword = async password => {
-    return await bcrypt.hash(password, 12)
+    return (await bcrypt.hash(password, 12))
 }
 
 const comparePassword = (password, userPassword) => {
