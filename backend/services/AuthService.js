@@ -23,7 +23,6 @@ const login = async (ID, password) => {
     const user = await AuthRepository.login(ID);
     const loginUserPassword = await AuthRepository.getLoginUserPassword(ID);
 
-
     if (
         user &&
         (await AuthHelper.comparePassword(password, loginUserPassword))
@@ -31,11 +30,10 @@ const login = async (ID, password) => {
         const [token, tokenCookieOptions] = await AuthHelper.generateToken(
             user
         );
-        console.log(password)
-        console.log(loginUserPassword)
-        console.log((await AuthHelper.comparePassword(password, loginUserPassword)))
+
         return { user, token, tokenCookieOptions };
     }
+
     else if (!(await AuthHelper.comparePassword(password, loginUserPassword))) {
         throw new ErrorHandler("invalid login credentials", 401);
     }
