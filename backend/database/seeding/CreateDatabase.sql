@@ -1,1 +1,1 @@
-create database  shal;
+create database  sswew;

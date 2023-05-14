@@ -1,1 +1,1 @@
-drop database if exists shal;
+drop database if exists sswew;
