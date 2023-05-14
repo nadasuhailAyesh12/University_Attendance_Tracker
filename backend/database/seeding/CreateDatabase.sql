@@ -1,1 +1,1 @@
-create database fsgt;
+create database  shal;

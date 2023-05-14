@@ -5,7 +5,8 @@ const { DEVELOPMENT_URI, SEEDER_URI, PORT, NODE_ENV, JSONWEBTOKEN_SECRET_KEY, CO
 
 const config = {
     database: {
-        uri: NODE_ENV === "development" ? DEVELOPMENT_URI : SEEDER_URI
+        development_URI: DEVELOPMENT_URI,
+        uri: NODE_ENV == 'development' ? DEVELOPMENT_URI : SEEDER_URI
     },
     node_env: NODE_ENV,
     port: PORT || 5000
