@@ -1,6 +1,6 @@
 const AuthHelper = require("../helpers/AuthHelper");
-const AuthRepository = require("../repositories/AuthRepository");
-const userRepository = require("../repositories/UserRepository");
+const AuthRepository = require("../models/queries/AuthQueryjs");
+const userRepository = require("../models/queries/UserQuery");
 
 const register = async (ID, name, password, role) => {
     if (password) {
