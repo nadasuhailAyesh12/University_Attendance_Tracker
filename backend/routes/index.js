@@ -1,4 +1,4 @@
-const db = require("../database/Connection");
+const db = require("../models/seeding/Connection");
 const AuthRouter = require("./AuthRouter");
 
 const router = require("express").Router();

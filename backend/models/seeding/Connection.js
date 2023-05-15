@@ -1,6 +1,6 @@
 const pgPromise = require("pg-promise")({})
 
-const { uri } = require("../config/enviroment").database;
+const { uri } = require("../../config/enviroment").database;
 
 const db = pgPromise(uri);
 

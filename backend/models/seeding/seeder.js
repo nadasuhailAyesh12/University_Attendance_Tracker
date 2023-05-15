@@ -3,7 +3,7 @@ const { join } = require("path");
 const pgPromise = require("pg-promise")({})
 const { QueryFile } = require("pg-promise");
 
-let db = require("../Connection");
+let db = require("./Connection");
 const { development_URI } = require("../../config/enviroment").database
 
 const dropDatabase = async () => {
@@ -20,7 +20,7 @@ const createDatabase = async () => {
 
 const createTables = async () => {
     db = pgPromise(development_URI)
-    const fullPath = join(__dirname, "init.sql");
+    const fullPath = join(__dirname, "createTables.sql");
     await db.any(new QueryFile(fullPath, { minify: true }));
     console.log("tables created successfully")
 };
@@ -28,7 +28,6 @@ const seedData = async () => {
     const fullPath = join(__dirname, "fakeData.sql");
     await db.any(new QueryFile(fullPath, { minify: true }));
     console.log("data inserted  successfully")
-    db.$pool.end;
 };
 
 dropDatabase().then(() => createDatabase()).then(() => createTables())
