@@ -1,6 +1,7 @@
 const AuthHelper = require("../helpers/AuthHelper");
 const AuthRepository = require("../models/queries/AuthQueryjs");
 const userRepository = require("../models/queries/UserQuery");
+const ErrorHandler = require("../helpers/ErrorHandlerHelper")
 
 const register = async (ID, name, password, role) => {
     if (password) {
@@ -12,5 +13,31 @@ const register = async (ID, name, password, role) => {
     }
 };
 
-const AuthService = { register }
+const login = async (ID, password) => {
+
+    if (!ID || !password) {
+        throw new ErrorHandler('Please enter email & password', 400)
+    }
+
+    const user = await AuthRepository.login(ID);
+    const loginUserPassword = await AuthRepository.getLoginUserPassword(ID);
+
+
+    if (
+        user &&
+        (await AuthHelper.comparePassword(password, loginUserPassword))
+    ) {
+        const [token, tokenCookieOptions] = await AuthHelper.generateToken(
+            user
+        );
+
+        return { user, token, tokenCookieOptions };
+    }
+
+    else if (!(await AuthHelper.comparePassword(password, loginUserPassword))) {
+        throw new ErrorHandler("invalid login credentials", 401);
+    }
+};
+
+const AuthService = { register, login };
 module.exports = AuthService;
