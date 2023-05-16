@@ -1,4 +1,5 @@
 const AuthService = require("../services/AuthService");
+const { expiresTime } = require("../config/enviroment").cookieConfig
 
 const register = async (req, res, next) => {
     try {
