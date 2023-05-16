@@ -1,4 +1,4 @@
-const db = require("../database/Connection");
+const db = require("../seeding/Connection");
 const { PreparedStatement: PS } = require("pg-promise")
 
 const getUserByID = async (ID) => {
