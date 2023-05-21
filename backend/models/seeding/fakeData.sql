@@ -10,7 +10,9 @@ INSERT INTO instructor values(320200629,'Rasha','Engineering','teaching-assistan
 
 INSERT INTO section values(201,'ECOM3422','winter',2023,320200629);
 
-INSERT INTO student values(220200628,'Nada','suhail','khalil','Ayesh','female','Gaza','Engineering');
+INSERT INTO student values(220200628,'Nada','suhail','khalil','Ayesh','female','Gaza','Engineering'),
+(220200629,'Noura','khaled','hazem','ayash','female','Gaza','Engineering')
+;
 
 INSERT INTO student_phone values(220200628,013827093);
 

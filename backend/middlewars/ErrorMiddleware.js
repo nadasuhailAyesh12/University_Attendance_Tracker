@@ -1,4 +1,5 @@
 const { node_env } = require("../config/enviroment");
+const ErrorHandler = require("../helpers/ErrorHandlerHelper");
 
 module.exports = (err, req, res, next) => {
     err.message = err.message || "internal server error";
@@ -19,6 +20,10 @@ module.exports = (err, req, res, next) => {
     if (err.code === 23505) {
         const message = `duplicate ${Object.keys(err.keyValue)} entered`;
         err = new ErrorHandler(message, 409);
+    }
+    if (err.code === 0) {
+        const message = "document not found"
+        err = new ErrorHandler(message, 404);
     }
     res.status(err.statusCode).json({
         success: false,
