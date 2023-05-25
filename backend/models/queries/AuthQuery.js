@@ -2,9 +2,9 @@ const { PreparedStatement } = require('pg-promise');
 
 const db = require('../seeding/Connection');
 
-const register = async (ID, name, password, role) => {
-    const addUserQuery = new PreparedStatement({ name: 'register', text: 'INSERT INTO authuser(ID,name, password,role) VALUES($1, $2,$3,$4)' })
-    addUserQuery.values = [ID, name, password, role]
+const register = async (ID, name, password) => {
+    const addUserQuery = new PreparedStatement({ name: 'register', text: 'INSERT INTO authuser(ID,name, password) VALUES($1, $2,$3)' })
+    addUserQuery.values = [ID, name, password]
     await db.none(addUserQuery)
 }
 
@@ -30,5 +30,11 @@ const login = async (ID) => {
     return user
 }
 
-const AuthRepository = { register, getLoginUserPassword, login };
+const getUserByID = async (ID) => {
+    const getUserByIDQuery = new PreparedStatement({ name: 'getUserByID', text: "select ID,name,role from authuser where ID= $1", values: [ID] });
+    const user = await db.one(getUserByIDQuery);
+    return user;
+}
+
+const AuthRepository = { register, getLoginUserPassword, login, getUserByID };
 module.exports = AuthRepository;

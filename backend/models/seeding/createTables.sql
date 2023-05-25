@@ -8,7 +8,7 @@ CREATE TABLE
         ID Integer  primary key ,
         name varchar(20) not null,
         password text not null,
-         role text  not null
+         role text default 'user'
     );
      
      CREATE TABLE
