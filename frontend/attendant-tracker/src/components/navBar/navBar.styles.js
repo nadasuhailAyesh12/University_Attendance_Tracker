@@ -16,6 +16,10 @@ font-size: 24px;
 font-weight: bold;
 font-family: 'Poppins',sans-serif;
 margin:0 30px;
+Link{
+    text-decoration: none;
+    color:black;
+}
 `;
 
 
