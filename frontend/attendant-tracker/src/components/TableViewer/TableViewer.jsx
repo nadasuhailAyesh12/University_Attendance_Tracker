@@ -23,12 +23,19 @@ const TableViewer = ({ WhichSection,SearchParams,TextString }) => {
     };
 
     const closePopup = () => {
+         if(isOpenEdit){
         setIsOpenEdit(false);
+         }
+         else if(isOpenAdd){
+            setIsOpenAdd(false);
+         }
     };
     const onFetchUpdate = async () => {
-        const { ID, first_name, middle_initial, middle_final, final_name, dept_name, location } = isSelectedToEdit;
+        const { id, first_name, middle_initial, middle_final, final_name, dept_name, location } = isSelectedToEdit;
         const ChoosenId = oldId;
-        const res = await axios.put(`http://localhost:5000/api/v1/student/${ChoosenId}`, { ID, first_name, middle_initial, middle_final, final_name, dept_name, location });
+        console.log(ChoosenId);
+        console.log("FIRST_NAME:",first_name);
+        const res = await axios.put(`http://localhost:5000/api/v1/student/${ChoosenId}`, {ID:id, first_name, middle_initial, middle_final, final_name, dept_name, location });
         console.log(oldId);
         console.log(isSelectedToEdit);
         console.log(res.data);
@@ -64,16 +71,19 @@ const TableViewer = ({ WhichSection,SearchParams,TextString }) => {
     useEffect(()=>{
         const fetch = async () => {
             console.log(SearchParams);
-            if(SearchParams==="" && TextString===""){
+            if(TextString===""){
                 onFirstLoad();
             }
             if(SearchParams==="name"){
             try {
                 const response = await axios.get(`http://localhost:5000/api/v1/student/name/${TextString}`);
+                console.log("i am here");
                 console.log(response.data);
                 setData([response.data.student])
             } catch (error) {
-                console.log(error);
+                if(error.response.status && TextString!==""){
+                    setData([]);
+                }
             }
         }
         else if(SearchParams==="id"){
@@ -82,16 +92,9 @@ const TableViewer = ({ WhichSection,SearchParams,TextString }) => {
                 console.log(response.data,"hiiiiiiii",+Math.random()*10);
                 setData([response.data.student])
             } catch (error) {
-                console.log(error);
-            }
-        }
-        else if(SearchParams==="id"){
-            try {
-                const response = await axios.get(`http://localhost:5000/api/v1/student/id/${TextString}`);
-                console.log(response.data,"hiiiiiiii",+Math.random()*10);
-                setData([response.data.student])
-            } catch (error) {
-                console.log(error);
+                if(error.response.status){
+                    setData([]);
+                }
             }
         }
         else if(SearchParams==="phone"){
@@ -100,7 +103,9 @@ const TableViewer = ({ WhichSection,SearchParams,TextString }) => {
                 console.log(response.data,"hiiiiiiii",+Math.random()*10);
                 setData([response.data.student])
             } catch (error) {
-                console.log(error);
+                if(error.response.status){
+                    setData([]);
+                }
             }
         }
         };
@@ -126,6 +131,7 @@ const TableViewer = ({ WhichSection,SearchParams,TextString }) => {
                     openPopup();
                     setOldId(el.id);
                     setIsSelectedToEdit(el);
+                    console.log(el);
 
                 }}>Edit</UpdateBtn>
                 <DelBtn onClick={() =>{//alert("are you sure");
