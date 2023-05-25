@@ -12,7 +12,6 @@ color:black;
 export const InternalWrapper=styled.div`
 width:80vw;
 height:85vh;
-background: red;
 position: relative;
 `;
 export const SearchBar=styled.div`
@@ -31,4 +30,21 @@ outline: none;
 border:1px solid black;
 font-size: 24px;
 `;
+export const Button=styled.div`
+width:150px;
+height:50px;
+border-radius: 10px;
+font-size: 16px;
+outline: none;
+display:flex;
+align-items: center;
+justify-content: center;
+background-color: #d9e3ed;
+outline: none;
+margin:0 10px;
+border:none;
+box-shadow: 0 0  5px rgba(0,0,0,0.4);
+cursor:pointer;
+`;
+
 

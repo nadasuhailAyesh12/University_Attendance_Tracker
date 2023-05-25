@@ -1,6 +1,6 @@
 import React from 'react'
-import { PopupOverlay,PopUpContent,CloseBtn } from './Popup.styles'
-const Popup = ({isOpen, onClose,children}) => {
+import { PopupOverlay,PopUpContent,CloseBtn,UpdateBtn,AddAttendance} from './Popup.styles'
+const Popup = ({isOpen, onClose,onUpdate,onAddAttendance,children}) => {
     if(!isOpen){
         return null;
     }
@@ -9,6 +9,8 @@ const Popup = ({isOpen, onClose,children}) => {
         <PopUpContent>
             <CloseBtn onClick={onClose}>x</CloseBtn>
             {children}
+            {onUpdate && <UpdateBtn onClick={onUpdate}>Update</UpdateBtn>}
+            {onAddAttendance && <AddAttendance onClick={onAddAttendance}>Add</AddAttendance>}
         </PopUpContent>
     </PopupOverlay>
   )

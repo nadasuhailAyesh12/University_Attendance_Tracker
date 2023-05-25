@@ -37,4 +37,9 @@ position: fixed;
   cursor:pointer;
   user-select: none;
   `;
+  export const UpdateBtn=styled(CloseBtn)`
+  background-color: aliceblue;
+  color:#fff;
+  `;
 
+export const AddAttendance=styled(UpdateBtn)``;
