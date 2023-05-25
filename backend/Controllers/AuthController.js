@@ -3,8 +3,8 @@ const { expiresTime } = require("../config/enviroment").cookieConfig
 
 const register = async (req, res, next) => {
     try {
-        const { ID, name, password, role } = req.body;
-        const { token, user, tokenCookieOptions } = await AuthService.register(ID, name, password, role)
+        const { ID, name, password } = req.body;
+        const { token, user, tokenCookieOptions } = await AuthService.register(ID, name, password)
         res.cookie("token", token, tokenCookieOptions);
 
         res.status(201).json({
@@ -52,5 +52,17 @@ const logout = async (req, res, next) => {
     }
 };
 
-const AuthController = { register, login, logout }
+const verify = (req, res) => {
+    try {
+        res.status(200).json({
+            user: req.user,
+            success: true
+        })
+    }
+    catch (err) {
+        return next(err);
+    }
+};
+
+const AuthController = { register, login, logout, verify }
 module.exports = AuthController
