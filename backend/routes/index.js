@@ -1,6 +1,7 @@
 const db = require("../models/seeding/Connection");
 const AuthRouter = require("./AuthRouter");
 const courseRouter = require("./CourseRouter");
+const fileRouter = require("./FileRouter");
 const sectionRouter = require("./SectionRouter");
 const UserRouter = require("./UserRouter");
 
@@ -18,5 +19,6 @@ router.use("/auth", AuthRouter)
 router.use("/student", UserRouter)
 router.use('/course', courseRouter)
 router.use('/section', sectionRouter)
+router.use('/file', fileRouter)
 
 module.exports = router;
