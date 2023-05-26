@@ -142,12 +142,6 @@ const TableViewer = ({ WhichSection,SearchParams,TextString }) => {
                     setIsOpenAdd(true);
                 }}>Add Attendance</AddAttendance>
             </ColumnRecord>))}
-            {/* <ColumnRecord>
-    {arr1.map((element,index)=>(<ColumnTitle key={index}>{element}</ColumnTitle>))}
-    <UpdateBtn onClick={openPopup}>Edit</UpdateBtn>
-    <DelBtn onClick={()=>alert("are you sure")}>Delete</DelBtn>
-    <AddAttendance>Add Attendance</AddAttendance>
-    </ColumnRecord> */}
             <Popup isOpen={isOpenEdit} onClose={closePopup} onUpdate={onFetchUpdate}>
                 <h2>ID</h2>
                 <Input defaultValue={isSelectedToEdit.id} onChange={(e) => {
