@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { WrapperViewer, ColumnBar, ColumnTitle, ColumnRecord, UpdateBtn, DelBtn, AddAttendance, Input } from '../TableViewer/TableViewer.styles';
 import Popup from '../Popup/Popup';
-const TableViewerCourse=({recordChanges})=>{
+const TableViewerCourse=({recordChanges,TextString})=>{
     const [Data,setData]=useState([]);
     const arr=["course_id","title","dept_name","book"];
     const sectionTitles=["sec_id","course_id","building","room_number","day","start_time","end_time"];
@@ -33,6 +33,10 @@ const TableViewerCourse=({recordChanges})=>{
         }
         
    };
+   const Search=async()=>{
+    const response=await axios.get(`http://localhost:5000/api/v1/course/${TextString}`);
+    setData(response.data.course);
+   }
    const closeShowing=()=>{
     setIsOpenShowing(false);
    }
@@ -85,6 +89,13 @@ const onDeleteCourse=async()=>{
     useEffect(()=>{
         onFirstLoad();
     },[recordChanges])
+    useEffect(()=>{
+        if(TextString===""){
+            onFirstLoad();
+        }else{
+            Search();
+        }
+    },[TextString]);
     return(
         <WrapperViewer>
             <ColumnBar>

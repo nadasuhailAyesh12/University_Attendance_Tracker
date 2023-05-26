@@ -40,11 +40,10 @@ const CoursePage = () => {
     <InternalWrapper>
         <SearchBar>
         <Label>Search For Course</Label>
-            <Input onBlur={(e)=>{setTextString(e.target.value);
-            console.log(e.target.value);}}/>
+            <Input onKeyDown={(e)=>{setTextString(e.target.value)}}/>
             <Button onClick={()=>openPopup()}>Add Course</Button>
         </SearchBar>
-        <TableViewerCourse recordChanges={dummyState}/>
+        <TableViewerCourse recordChanges={dummyState} TextString={TextString}/>
         <Popup isOpen={isOpenToAdd} onClose={closePopup} onAddAttendance={updateCourse}>
                 <h2>Course ID</h2>
                 <Input onChange={(e)=>{
