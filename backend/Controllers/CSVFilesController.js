@@ -19,6 +19,7 @@ const insertfromCsvFileToDatabase = async (req, res, next) => {
             .on('end', () => {
                 console.log('Data insertion completed.');
             });
+        res.send("nada");
     }
     catch (err) {
         return next(err)
