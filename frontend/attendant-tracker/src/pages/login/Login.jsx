@@ -1,13 +1,15 @@
-import { useState,useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import axios from 'axios';
 import { Wrapper, LoginForm, Label, StyInput, InternalWrapper, DontHaveLabel, SignInBtn, SignUpLabel } from './Login.styles';
 import { useNavigate } from 'react-router-dom';
-const Login = () => {
+import Cookies from 'js-cookie';
+const expiresTime = 7;
+const Login = ({role,setRole}) => {
 
   const [ID, setID] = useState('');
   const [password, setPassword] = useState('');
   const [LoginError, setLogicError] = useState(false);
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   const handleFormSubmit = (e) => {
     e.preventDefault();
 
@@ -19,6 +21,11 @@ const Login = () => {
       .then(function (response) {
         // Handle the response from the backend
         console.log(response.data);
+        Cookies.set('token', response.data.token);
+
+        setRole(response.data.user.role);
+       
+        // Cookies.set('token', response.data.token);
         // setRole(response.user.role);
         navigate("/student");
       })
