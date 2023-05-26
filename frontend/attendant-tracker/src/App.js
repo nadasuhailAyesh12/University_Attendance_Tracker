@@ -9,7 +9,7 @@ import SignUp from './pages/signUp/SignUp';
 import { useNavigate } from 'react-router-dom';
 
 function App() {
- 
+  const [role,setRole]=useState("");
   return (
     
    
@@ -17,8 +17,8 @@ function App() {
         <div className="App">
           {/* <Login /> */}
           <Routes>
-            <Route path="/student" element={<StudentPage/>} />
-            <Route path="/" element={<Login/>} />
+            <Route path="/student" element={<StudentPage role={role} setRole={setRole}/>} />
+            <Route path="/" element={<Login role={role} setRole={setRole}/>} />
             <Route path="/signup" element={<SignUp/>} />
             <Route path="/courses" element={<CoursePage/>} />
           </Routes>

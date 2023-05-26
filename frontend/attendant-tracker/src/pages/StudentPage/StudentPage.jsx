@@ -3,7 +3,7 @@ import NavBar from '../../components/navBar/NavBar';
 import {Wrapper,InternalWrapper,SearchBar,Input,Button} from './StudentPage.styles';
 import { Label } from '../../components/navBar/navBar.styles';
 import TableViewer from '../../components/TableViewer/TableViewer';
-const StudentPage = () => {
+const StudentPage = ({role,setRole}) => {
   const [SearchParams,setSearchParams]=useState('');
   const [TextString,setTextString]=useState('');
   const handleKeyPress = (event) => {
@@ -15,7 +15,7 @@ const StudentPage = () => {
   };
   return (
     <Wrapper>
-    <NavBar/>
+    <NavBar role={role}/>
     <InternalWrapper>
         <SearchBar>
         <Label>Search For Student</Label>
