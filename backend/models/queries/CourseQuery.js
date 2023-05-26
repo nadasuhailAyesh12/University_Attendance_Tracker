@@ -28,5 +28,14 @@ const deleteCourse = async (id) => {
     await db.none(deleteQuery);
 }
 
-const courseRepository = { addCourse, getCourses, updateCourse, deleteCourse };
+const searchCourse = async (title) => {
+    const searchQuery = new PreparedStatement({
+        name: 'course', text: 'SELECT * FROM course WHERE title ILIKE $1'
+    })
+    searchQuery.values = [`%${title}%`]
+    const courses = await db.any(searchQuery);
+    return courses;
+}
+
+const courseRepository = { addCourse, getCourses, updateCourse, deleteCourse, searchCourse };
 module.exports = courseRepository;
