@@ -10,7 +10,6 @@ const Login = ({role,setRole}) => {
   const [password, setPassword] = useState('');
   const [LoginError, setLogicError] = useState(false);
   const navigate = useNavigate();
-  // const cookies=Cookies();
   const handleFormSubmit = (e) => {
     e.preventDefault();
 
@@ -22,9 +21,10 @@ const Login = ({role,setRole}) => {
       .then(function (response) {
         // Handle the response from the backend
         console.log(response.data);
-        // Cookies.set('token', response.data.token);
+        Cookies.set('token', response.data.token);
+
         setRole(response.data.user.role);
-        // console.log("the cookie is ", Cookies.get('token'));
+       
         // Cookies.set('token', response.data.token);
         // setRole(response.user.role);
         navigate("/student");
