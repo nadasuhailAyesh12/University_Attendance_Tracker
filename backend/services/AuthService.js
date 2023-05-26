@@ -26,11 +26,11 @@ const login = async (ID, password) => {
         user &&
         (await AuthHelper.comparePassword(password, loginUserPassword))
     ) {
-        const [token, tokenCookieOptions] = await AuthHelper.generateToken(
+        const [token] = await AuthHelper.generateToken(
             user
         );
 
-        return { user, token, tokenCookieOptions };
+        return { user, token };
     }
 
     else if (!(await AuthHelper.comparePassword(password, loginUserPassword))) {

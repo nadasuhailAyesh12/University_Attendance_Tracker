@@ -7,7 +7,7 @@ const TableViewerCourse=({recordChanges})=>{
     const arr=["course_id","title","dept_name","book"];
     const sectionTitles=["sec_id","course_id","building","room_number","day","start_time","end_time"];
     const [isOpenEdit,setIsOpenEdit]=useState(false);
-    const [isSelectedToEdit,setIsSelectedToEdit]=useState({});
+    const [isSelectedToEdit,setIsSelectedToEdit]=useState({course_id:"",title:"",dept_name:"",book:""});
     const [isAddedRecord,setIsAddRecord]=useState(recordChanges);
     const [isOpenShowing,setIsOpenShowing]=useState(false);
     const [IDShowing,setIDShowing]=useState("");
@@ -42,6 +42,17 @@ const TableViewerCourse=({recordChanges})=>{
 const closeAddSectionPop=()=>{
     setIsOpenAddSec(false);
 }
+const onUpdateCourse=async()=>{
+    try{
+        console.log(isSelectedToEdit);
+        console.log(IDShowing);
+        const response=await axios.put(`http://localhost:5000/api/v1/course/${IDShowing}`,isSelectedToEdit);
+        console.log(response.data);
+        onFirstLoad();
+    }catch(error){
+        console.log(error);
+    }
+}
 const onAddSection=async()=>{
  try{
     console.log(AddedSection);
@@ -58,6 +69,15 @@ const onShowSection=async()=>{
         console.log(IDShowing);
         const response = await axios.get(`http://localhost:5000/api/v1/section/${IDShowing}`);
         setSectionRelated(response.data.sections);
+    }catch(err){
+        console.log(err);
+    }
+}
+const onDeleteCourse=async()=>{
+    try{
+        const response=await axios.delete(`http://localhost:5000/api/v1/course/${IDShowing}`);
+        console.log(IDShowing," ",response.data);
+        onFirstLoad();
     }catch(err){
         console.log(err);
     }
@@ -79,8 +99,12 @@ const onShowSection=async()=>{
                     <UpdateBtn onClick={()=>{
                         openPopup();
                         setIsSelectedToEdit(el);
+                        setIDShowing(el.course_id);
                     }}>Edit</UpdateBtn>
-                    <DelBtn>Delete</DelBtn>
+                    <DelBtn onClick={()=>{
+                        setIDShowing(el.course_id);
+                        onDeleteCourse();
+                    }}>Delete</DelBtn>
                     <UpdateBtn onClick={()=>{
                         setIDShowing(el.course_id);
                         onShowSection();
@@ -96,19 +120,44 @@ const onShowSection=async()=>{
             ))}
             <Popup isOpen={isOpenEdit} onClose={closePopup}>
                 <h2>Course ID</h2>
-                <Input defaultValue={isSelectedToEdit.course_id} />
+                <Input defaultValue={isSelectedToEdit.course_id}
+                onBlur={(e)=>{
+                    setIsSelectedToEdit((prev)=>{
+                        const b=prev;
+                        b.course_id=e.target.value;
+                        return b;
+                    })
+                }} />
                 <h2>title</h2>
                 <Input defaultValue={isSelectedToEdit.title}
+                onBlur={(e)=>{
+                    setIsSelectedToEdit((prev)=>{
+                        const b=prev;
+                        b.title=e.target.value;
+                        return b;
+                    })
+                }} 
                 />
                 <h2>Department name</h2>
                 <Input defaultValue={isSelectedToEdit.dept_name} 
+                onBlur={(e)=>{
+                    setIsSelectedToEdit((prev)=>{
+                        const b=prev;
+                        b.dept_name=e.target.value;
+                        return b;
+                    })
+                }} 
                 />
                 <h2>book</h2>
-                <Input defaultValue={isSelectedToEdit.book}  />
-                
-                <h2>Department name</h2>
-                <Input defaultValue={isSelectedToEdit.dept_name} 
-                 />
+                <Input defaultValue={isSelectedToEdit.book} 
+                onBlur={(e)=>{
+                    setIsSelectedToEdit((prev)=>{
+                        const b=prev;
+                        b.book=e.target.value;
+                        return b;
+                    })
+                }}/>
+                 <UpdateBtn onClick={()=>onUpdateCourse()}>Update course</UpdateBtn>
             </Popup>
             <Popup style={{width:'850px'}} isOpen={isOpenShowing} onClose={closeShowing}>
             <WrapperViewer>
@@ -202,7 +251,7 @@ const onShowSection=async()=>{
                     })
                 }}/>
                 <UpdateBtn onClick={onAddSection}>Add</UpdateBtn>
-            </Popup>
+                </Popup>
         </WrapperViewer>
 
 
