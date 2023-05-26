@@ -23,8 +23,7 @@ const registerStudentAttendance = async (lecture_id, ID) => {
     const registerStudentAttendanceQuery = new PreparedStatement({
         name: 'registerStudentAttendance', text: "insert into attendance VALUES($1, $2)"
     });
-    const user = await db.none(registerStudentAttendanceQuery, [lecture_id, ID]);
-    return user;
+    await db.none(registerStudentAttendanceQuery, [lecture_id, ID]);
 }
 
 const getStudents = async () => {
