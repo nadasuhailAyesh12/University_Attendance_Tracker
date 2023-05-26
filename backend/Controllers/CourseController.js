@@ -28,5 +28,34 @@ const addCourse = async (req, res, next) => {
     }
 };
 
-const courseController = { getCourses, addCourse };
+const updateCourse = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const { title, dept_name, book, course_id } = req.body
+        await courseRepository.updateCourse(id, title, dept_name, book, course_id);
+
+        res.status(200).json({
+            success: true,
+        });
+    }
+    catch (err) {
+        return next(err);
+    }
+};
+
+const deleteCourse = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        await courseRepository.deleteCourse(id);
+
+        res.status(200).json({
+            success: true,
+        });
+    }
+    catch (err) {
+        return next(err);
+    }
+};
+
+const courseController = { getCourses, addCourse, updateCourse, deleteCourse };
 module.exports = courseController;
