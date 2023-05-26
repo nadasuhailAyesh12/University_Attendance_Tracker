@@ -12,5 +12,21 @@ const getCourses = async () => {
     return courses;
 }
 
-const courseRepository = { addCourse, getCourses };
+const updateCourse = async (oldID, title, dept_name, book, course_id) => {
+    const updateQuery = new PreparedStatement({
+        name: 'course', text: "update course set course_id=$5,title=$2,dept_name=$3,book=$4 where course_id =$1"
+    })
+    updateQuery.values = [oldID, title, dept_name, book, course_id];
+    await db.none(updateQuery);
+}
+
+const deleteCourse = async (id) => {
+    const deleteQuery = new PreparedStatement({
+        name: 'course', text: "delete from course where course_id =$1"
+    })
+    deleteQuery.values = [id];
+    await db.none(deleteQuery);
+}
+
+const courseRepository = { addCourse, getCourses, updateCourse, deleteCourse };
 module.exports = courseRepository;
