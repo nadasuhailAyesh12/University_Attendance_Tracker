@@ -5,6 +5,7 @@ const fileRouter = require("./FileRouter");
 const instructorRouter = require("./InstructorRouter");
 const sectionRouter = require("./SectionRouter");
 const UserRouter = require("./UserRouter");
+const lectureRouter = require("./lectureRouter");
 
 const router = require("express").Router();
 
@@ -22,5 +23,5 @@ router.use('/course', courseRouter)
 router.use('/section', sectionRouter)
 router.use('/file', fileRouter)
 router.use('/instructor', instructorRouter)
-
+router.use('/lecture', lectureRouter)
 module.exports = router;
