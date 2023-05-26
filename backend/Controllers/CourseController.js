@@ -57,5 +57,20 @@ const deleteCourse = async (req, res, next) => {
     }
 };
 
-const courseController = { getCourses, addCourse, updateCourse, deleteCourse };
+const searchCourse = async (req, res, next) => {
+    try {
+        const { title } = req.params;
+        const course = await courseRepository.searchCourse(title);
+
+        res.status(200).json({
+            success: true,
+            course
+        });
+    }
+    catch (err) {
+        return next(err);
+    }
+};
+
+const courseController = { getCourses, addCourse, updateCourse, deleteCourse, searchCourse };
 module.exports = courseController;
