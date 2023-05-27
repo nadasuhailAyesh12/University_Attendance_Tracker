@@ -8,7 +8,7 @@ import InstructorPage from './pages/InstructorPage/InstructorPage';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import SignUp from './pages/signUp/SignUp';
 import { useNavigate } from 'react-router-dom';
-
+import LecturePage from './pages/lecturePage/LecturePage';
 function App() {
   const [role,setRole]=useState("");
   return (
@@ -23,6 +23,7 @@ function App() {
             <Route path="/signup" element={<SignUp/>} />
             <Route path="/courses" element={<CoursePage/>} />
             <Route path="/instructor" element={<InstructorPage/>}/>
+            <Route path="/lectures" element={<LecturePage/>}/>
           </Routes>
         </div>
       </Router>
