@@ -101,7 +101,7 @@ CREATE TABLE
 
     CREATE TABLE
     lecture (
-        lecture_id  serial primary key,
+        lecture_id  Integer default 1,
          sec_id Integer ,
         course_id varchar(20),
         semester varchar(20),
@@ -113,14 +113,17 @@ CREATE TABLE
         building varchar(20) not null,
         foreign key (sec_id,course_id,semester,year) references section
          on DELETE CASCADE 
-        on UPDATE CASCADE
+        on UPDATE CASCADE,
+        primary key(lecture_id,course_id,sec_id)
     );
 
     CREATE TABLE
     attendance (
         lecture_id  serial ,
           ID integer,
-       foreign key (lecture_id) references lecture
+            sec_id Integer ,
+        course_id varchar(20),
+       foreign key (lecture_id,course_id,sec_id) references lecture
          on DELETE CASCADE 
         on UPDATE CASCADE,
        foreign key (ID) references student

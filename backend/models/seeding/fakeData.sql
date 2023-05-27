@@ -23,11 +23,11 @@ INSERT INTO student values(220200628,'Nada','suhail','khalil','Ayesh','female','
 
 INSERT INTO student_phone values(220200628,013827093);
 
-INSERT INTO lecture(sec_id,course_id,semester,year,day,start_time,end_time,room_number,building)
- values(201,'ECOM3422','winter',2023,'saturday',12,1,213,'L'),
- (202,'ECOM3422','winter',2023,'saturday',1,2,212,'L'),
- (201,'ECOM2422','winter',2023,'saturday',12,1,213,'L'),
-  (201,'SCOM2422','winter',2023,'saturday',12,1,213,'C');
+INSERT INTO lecture
+ values(1,201,'ECOM3422','winter',2023,'saturday',12,1,213,'L'),
+ (1,202,'ECOM3422','winter',2023,'saturday',1,2,212,'L'),
+ (1,201,'ECOM2422','winter',2023,'saturday',12,1,213,'L'),
+  (1,201,'SCOM2422','winter',2023,'saturday',12,1,213,'C');
 
 INSERT INTO takes values (201,'ECOM3422','winter',2023,220200628);
 
