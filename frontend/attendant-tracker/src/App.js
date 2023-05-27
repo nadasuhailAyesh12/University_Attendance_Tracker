@@ -4,6 +4,7 @@ import Login from './pages/login/Login';
 import NavBar from './components/navBar/NavBar';
 import StudentPage from './pages/StudentPage/StudentPage';
 import CoursePage from './pages/coursePage/CoursePage';
+import InstructorPage from './pages/InstructorPage/InstructorPage';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import SignUp from './pages/signUp/SignUp';
 import { useNavigate } from 'react-router-dom';
@@ -21,6 +22,7 @@ function App() {
             <Route path="/" element={<Login role={role} setRole={setRole}/>} />
             <Route path="/signup" element={<SignUp/>} />
             <Route path="/courses" element={<CoursePage/>} />
+            <Route path="/instructor" element={<InstructorPage/>}/>
           </Routes>
         </div>
       </Router>
