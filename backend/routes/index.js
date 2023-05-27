@@ -6,7 +6,7 @@ const instructorRouter = require("./InstructorRouter");
 const sectionRouter = require("./SectionRouter");
 const UserRouter = require("./UserRouter");
 const lectureRouter = require("./lectureRouter");
-
+const departmentRouter = require("./departmentRouter");
 const router = require("express").Router();
 
 // router.get("/", async (req, res) => {
@@ -24,4 +24,5 @@ router.use('/section', sectionRouter)
 router.use('/file', fileRouter)
 router.use('/instructor', instructorRouter)
 router.use('/lecture', lectureRouter)
+router.use('/department', departmentRouter)
 module.exports = router;
