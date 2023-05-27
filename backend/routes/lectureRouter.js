@@ -3,8 +3,8 @@ const lectureRouter = require('express').Router();
 
 lectureRouter.get('/search/:course_id/:dept_name/:options', lectureController.searchLecture)
 lectureRouter.get('/:dept_name/:course_id', lectureController.getLectures)
-// courseRouter.post('/', courseController.addCourse)
-// courseRouter.put('/:id', courseController.updateCourse)
-// courseRouter.delete('/:id', courseController.deleteCourse)
+lectureRouter.post('/', lectureController.insertLecture)
+lectureRouter.put('/:id/:oldCourse_id/:oldSec_id', lectureController.updateLecture)
+lectureRouter.delete('/:id/:course_id/:sec_id', lectureController.deleteLecture)
 
 module.exports = lectureRouter
