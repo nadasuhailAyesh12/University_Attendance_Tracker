@@ -1,6 +1,19 @@
 const db = require("../seeding/Connection");
 const { PreparedStatement } = require("pg-promise")
 
+const getStudentsWhoAttendLessthan25Percent = async (course_id, sec_id) => {
+    const getStudentDroppedQuery = new PreparedStatement({
+        name: 'getStudentByID', text: `SELECT student.ID from student natural join takes
+ where ID  not in (select attendance.ID FROM attendance 
+    WHERE course_id = $1and sec_id=$2
+    GROUP BY attendance.ID
+HAVING (COUNT(*) * 100.0) / (SELECT COUNT(*) FROM lecture WHERE course_id =$1 and sec_id=$2) >=25)`,
+        values: [course_id, sec_id]
+    });
+    const data = await db.any(getStudentDroppedQuery)
+    return data;
+}
+
 const getStudentByID = async (ID) => {
     const getStudentByIDQuery = new PreparedStatement({ name: 'getStudentByID', text: "select * from student where ID= $1", values: [ID] });
     const user = await db.one(getStudentByIDQuery);
@@ -43,5 +56,5 @@ const updateStudent = async (oldID, first_name, middle_initial, middle_final, fi
 }
 
 
-const studentRepository = { getStudentByID, getStudentByphone, getStudentByName, registerStudentAttendance, getStudents, updateStudent };
+const studentRepository = { getStudentsWhoAttendLessthan25Percent, getStudentByID, getStudentByphone, getStudentByName, registerStudentAttendance, getStudents, updateStudent };
 module.exports = studentRepository;

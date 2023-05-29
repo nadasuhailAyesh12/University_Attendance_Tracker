@@ -129,7 +129,7 @@ CREATE TABLE
        foreign key (ID) references student
          on DELETE CASCADE 
         on UPDATE CASCADE,
-        primary key (lecture_id,ID)
+        primary key (lecture_id,ID,sec_id,course_id)
     );
 
 COMMIT;

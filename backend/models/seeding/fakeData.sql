@@ -29,7 +29,8 @@ INSERT INTO lecture
  (1,201,'ECOM2422','winter',2023,'saturday',12,1,213,'L'),
   (1,201,'SCOM2422','winter',2023,'saturday',12,1,213,'C');
 
-INSERT INTO takes values (201,'ECOM3422','winter',2023,220200628);
+INSERT INTO takes values (201,'ECOM3422','winter',2023,220200628),
+(201,'ECOM3422','winter',2023,220200629);
 
-INSERT INTO attendance values(1,220200628);
+INSERT INTO attendance values(1,220200628,201,'ECOM3422');
 
