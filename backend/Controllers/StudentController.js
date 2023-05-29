@@ -65,14 +65,16 @@ const addAttendance = async (req, res, next) => {
 
 const getStudents = async (req, res, next) => {
     try {
-        const students = await studentRepository.getStudents();
+        const { dept_name, course_id, sec_id } = req.params;
+        const students = await studentRepository.getStudents(dept_name, course_id, sec_id)
         res.status(200).json({
             success: true,
             students
         })
     }
     catch (err) {
-        return next(err)
+        // return next(err)
+        console.log(err)
     }
 }
 
@@ -91,5 +93,5 @@ const updateStudent = async (req, res, next) => {
     }
 }
 
-const userController = { searchByID, searchByPhone, searchByName, addAttendance, getStudents, updateStudent }
-module.exports = userController;
+const StudentController = { searchByID, searchByPhone, searchByName, addAttendance, getStudents, updateStudent }
+module.exports = StudentController;

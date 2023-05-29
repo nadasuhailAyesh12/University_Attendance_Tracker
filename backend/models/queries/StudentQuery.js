@@ -5,13 +5,12 @@ const getStudentsWhoAttendLessthan25Percent = async (course_id, sec_id) => {
     const getStudentDroppedQuery = new PreparedStatement({
         name: 'getStudentByID', text: `SELECT student.ID from student natural join takes
  where ID  not in (select attendance.ID FROM attendance 
-    WHERE course_id = $1and sec_id=$2
+    WHERE course_id = $1 and sec_id=$2
     GROUP BY attendance.ID
 HAVING (COUNT(*) * 100.0) / (SELECT COUNT(*) FROM lecture WHERE course_id =$1 and sec_id=$2) >=25)`,
         values: [course_id, sec_id]
     });
-    const data = await db.any(getStudentDroppedQuery)
-    return data;
+    return db.any(getStudentDroppedQuery);
 }
 
 const getStudentByID = async (ID) => {
@@ -39,9 +38,11 @@ const registerStudentAttendance = async (lecture_id, ID) => {
     await db.none(registerStudentAttendanceQuery, [lecture_id, ID]);
 }
 
-const getStudents = async () => {
+const getStudents = async (dept_name, course_id, sec_id) => {
     const getStudentsQuery = new PreparedStatement({
-        name: 'getStudentQuery', text: "select * from student"
+        name: 'getStudentQuery', text: `select ID,first_name,middle_initial,middle_final,final_name,gender,location from student natural join takes
+        where dept_name ilike $1 and course_id ilike $2 and sec_id=$3`,
+        values: [dept_name, course_id, sec_id]
     })
     const students = await db.any(getStudentsQuery);
     return students;
