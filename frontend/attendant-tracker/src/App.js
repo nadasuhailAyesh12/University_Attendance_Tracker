@@ -5,6 +5,7 @@ import NavBar from './components/navBar/NavBar';
 import StudentPage from './pages/StudentPage/StudentPage';
 import CoursePage from './pages/coursePage/CoursePage';
 import InstructorPage from './pages/InstructorPage/InstructorPage';
+import AttendantStatus from './pages/AttendantStatus/AttendantStatus';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import SignUp from './pages/signUp/SignUp';
 import { useNavigate } from 'react-router-dom';
@@ -24,6 +25,7 @@ function App() {
             <Route path="/courses" element={<CoursePage/>} />
             <Route path="/instructor" element={<InstructorPage/>}/>
             <Route path="/lectures" element={<LecturePage/>}/>
+            <Route path="/attendStatus" element={<AttendantStatus/>}/>
           </Routes>
         </div>
       </Router>
