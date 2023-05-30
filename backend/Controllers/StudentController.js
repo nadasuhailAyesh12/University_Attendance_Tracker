@@ -78,9 +78,14 @@ const getMostCommitedStudents = async (req, res, next) => {
     try {
         const { course_id, sec_id } = req.params;
         const students = await studentRepository.getMostCommitmentStudents(course_id, sec_id)
+        const commitedStudents = []
+        for (let i = 0; i < students.length; i++) {
+            commitedStudents[i] = await studentRepository.getStudentbyID(students[i].id)
+        }
+
         res.status(200).json({
             success: true,
-            students
+            commitedStudents
         })
     }
     catch (err) {
