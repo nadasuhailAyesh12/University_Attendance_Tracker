@@ -20,6 +20,26 @@ const getStudentAttendanceReport = async (id) => {
     });
     return db.any(getStudentAttendanceQuery);
 }
+const getStudentsWhomissed3consecutiveLectures = async () => {
+    const getStudentmissed3LecturesQuery = new PreparedStatement({
+        name: 'getStudentmissed3LecturesQuery ', text: `
+        WITH diffs AS (
+  SELECT a.ID, a.lecture_id - LAG(a.lecture_id) OVER (PARTITION BY a.ID ORDER BY a.lecture_id) AS diff
+  FROM attendance a
+)
+SELECT distinct d.ID
+FROM diffs d
+WHERE EXISTS (
+  SELECT 1
+  FROM diffs d2
+  WHERE d2.ID = d.ID
+  GROUP BY d2.ID
+  HAVING MAX(d2.diff) > 3
+); `,
+    });
+    const students = await db.any(getStudentmissed3LecturesQuery);
+    return students;
+}
 
 const search = async (argument) => {
     if (isNaN(argument)) {
@@ -117,5 +137,5 @@ const updateStudentReport = async (course_id, sec_id, lecture_id, ID) => {
     return db.any('select * from attendance where ID=$1', [ID])
 }
 
-const studentRepository = { getStudentsWhoAttendLessthan25Percent, registerStudentAttendance, getStudents, updateStudent, search, addStudent, getMostCommitmentStudents, deleteStudent, getStudentbyID, getStudentAttendanceReport, updateStudentReport };
+const studentRepository = { getStudentsWhoAttendLessthan25Percent, registerStudentAttendance, getStudents, updateStudent, search, addStudent, getMostCommitmentStudents, deleteStudent, getStudentbyID, getStudentAttendanceReport, updateStudentReport, getStudentsWhomissed3consecutiveLectures };
 module.exports = studentRepository;

@@ -1,11 +1,10 @@
-const db = require('../models/seeding/Connection');
-const studentRepository = require('../models/queries/StudentQuery');
 const exceljs = require('exceljs')
 const XLSX = require('xlsx');
-const lectureRepository = require('../models/queries/LectureQuery');
+const db = require('../models/seeding/Connection');
+const studentRepository = require('../models/queries/StudentQuery');
 const exportHelper = require('../helpers/exportFileHelper');
 
-const insertfromCsvFileToDatabase = async (req, res, next) => {
+const insertfromExcelFileToDatabase = async (req, res, next) => {
     const { sec_id, course_id, lecture_id } = req.params;
 
     const workbook = XLSX.readFile(req.files.file.tempFilePath);
@@ -83,7 +82,7 @@ const exportStudentsWhoAttendLessthan25Percent = async (req, res) => {
         })
 }
 
-const exportAttendanceStatus = (req, res) => {
+const exportAttendanceReport = (req, res) => {
     const { id } = req.params
     res.setHeader(
         'Content-Type',
@@ -103,5 +102,5 @@ const exportAttendanceStatus = (req, res) => {
 }
 
 
-const csvFileController = { insertfromCsvFileToDatabase, exportStudentsWhoAttendLessthan25Percent, exportAttendanceStatus, updateStudentReport }
-module.exports = csvFileController
+const ExcelFilesController = { insertfromExcelFileToDatabase, exportStudentsWhoAttendLessthan25Percent, exportAttendanceReport, updateStudentReport }
+module.exports = ExcelFilesController;
