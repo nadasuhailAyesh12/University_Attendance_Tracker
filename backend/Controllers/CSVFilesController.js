@@ -25,8 +25,8 @@ const insertfromCsvFileToDatabase = async (req, res, next) => {
     })
 }
 const updateStudentReport = async (req, res, next) => {
-    const { id, course_id, sec_id } = req.params
-    const { lecture_id } = req.body
+    const { id, course_id, sec_id, lecture_id } = req.params
+
     res.setHeader(
         'Content-Type',
         'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
