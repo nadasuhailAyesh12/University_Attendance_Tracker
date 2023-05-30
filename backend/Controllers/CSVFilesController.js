@@ -18,7 +18,7 @@ const insertfromCsvFileToDatabase = async (req, res, next) => {
             })
             .catch(error => {
                 console.error('Error inserting data:', error);
-                res.status(500).send('Error while inserting data to database');
+                res.status(500).json({message:'Error while inserting data to database',success:false});
             });
     })
 }

@@ -50,7 +50,7 @@ const TableViewerlectures = ({SearchParams,CourseId,dept_name,recordChanges}) =>
         }else{
             onSearch();
         }
-    },[recordChanges]);
+    },[recordChanges,CourseId,dept_name]);
     const DeleteRecord=async()=>{
         try{
             console.log("section id: ",oldSec);

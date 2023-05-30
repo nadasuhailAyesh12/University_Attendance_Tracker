@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { WrapperViewer, ColumnBar, ColumnTitle, ColumnRecord, UpdateBtn, DelBtn, AddAttendance, Input } from './TableViewer.styles';
 import Popup from '../Popup/Popup';
-const TableViewer = ({ WhichSection,SearchParams,TextString,course_id,dept_name,sec_id}) => {
+import { ToastContainer, toast } from 'react-toastify';
+const TableViewer = ({ WhichSection,SearchParams,TextString,course_id,dept_name,sec_id,Addition}) => {
     const [WhichSectionSt, setWhichSectionSt] = useState(WhichSection);
     const [isOpenEdit, setIsOpenEdit] = useState(false);
     const [isOpenAdd, setIsOpenAdd] = useState(false);
@@ -30,6 +31,9 @@ const TableViewer = ({ WhichSection,SearchParams,TextString,course_id,dept_name,
             setIsOpenAdd(false);
          }
     };
+    const showingError = (str) => {
+        toast(str.message);
+    }
     const onFetchUpdate = async () => {
         const { id, first_name, middle_initial, middle_final, final_name, dept_name, location } = isSelectedToEdit;
         const ChoosenId = oldId;
@@ -53,11 +57,21 @@ const TableViewer = ({ WhichSection,SearchParams,TextString,course_id,dept_name,
                 setData(response.data.students);
                 console.log(sec_id);
             } catch (error) {
+                showingError(error.message);
                 console.log(error);
             }
         };
 
         fetchData(); // Call the fetchData function
+    }
+    const onSearch=async()=>{
+        try{
+        const response=await axios.get(`http://localhost:5000/api/v1/student/search/${TextString}`);
+        setData([response.data.student])
+        }catch(error){
+            showingError(error.message);
+            console.log(error);
+        }
     }
     useEffect(onFirstLoad, [sec_id,course_id,dept_name]);
     const onDeleteRecord=async(id)=>{
@@ -67,6 +81,7 @@ const TableViewer = ({ WhichSection,SearchParams,TextString,course_id,dept_name,
         console.log(res.data);
         onFirstLoad();
         }catch(error){
+            showingError(error.message);
             console.log(error);
         }
     }
@@ -76,45 +91,14 @@ const TableViewer = ({ WhichSection,SearchParams,TextString,course_id,dept_name,
             if(TextString===""){
                 onFirstLoad();
             }
-            if(SearchParams==="name"){
-            try {
-                const response = await axios.get(`http://localhost:5000/api/v1/student/name/${TextString}`);
-                console.log("i am here");
-                console.log(response.data);
-                setData([response.data.student])
-            } catch (error) {
-                if(error.response.status && TextString!==""){
-                    setData([]);
-                }
+            else{
+                onSearch();
             }
-        }
-        else if(SearchParams==="id"){
-            try {
-                const response = await axios.get(`http://localhost:5000/api/v1/student/id/${TextString}`);
-                console.log(response.data,"hiiiiiiii",+Math.random()*10);
-                setData([response.data.student])
-            } catch (error) {
-                if(error.response.status){
-                    setData([]);
-                }
-            }
-        }
-        else if(SearchParams==="phone"){
-            try {
-                const response = await axios.get(`http://localhost:5000/api/v1/student/phone/${TextString}`);
-                console.log(response.data,"hiiiiiiii",+Math.random()*10);
-                setData([response.data.student])
-            } catch (error) {
-                if(error.response.status){
-                    setData([]);
-                }
-            }
-        }
         };
 
         fetch();
 
-    },[SearchParams,TextString]);
+    },[SearchParams,TextString,Addition]);
     return (
         <WrapperViewer>
             <ColumnBar>
