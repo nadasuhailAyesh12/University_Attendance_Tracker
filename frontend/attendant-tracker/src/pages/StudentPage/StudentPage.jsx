@@ -123,9 +123,9 @@ useEffect(()=>{
   getAllCourses();
 },[])
   return (
-    <Wrapper>
+    <Wrapper styles={{width:'95vw',overflowX:"hidden"}}>
     <NavBar role={role}/>
-    <InternalWrapper>
+    <InternalWrapper styles={{width:'95vw',overflowX:"hidden"}}>
         <SearchBar>
         <Label>Search For Student</Label>
             <input type="file" onChange={handleFileChange}/>

@@ -3,12 +3,16 @@ import axios from 'axios';
 import { WrapperViewer, ColumnBar, ColumnTitle, ColumnRecord, UpdateBtn, DelBtn, AddAttendance, Input } from './TableViewer.styles';
 import Popup from '../Popup/Popup';
 import { ToastContainer, toast } from 'react-toastify';
+import { Label } from '../navBar/navBar.styles';
 const TableViewer = ({ mostCommit,WhichSection,SearchParams,TextString,course_id,dept_name,sec_id,Addition}) => {
     const [WhichSectionSt, setWhichSectionSt] = useState(WhichSection);
     const [isOpenEdit, setIsOpenEdit] = useState(false);
     const [isOpenAdd, setIsOpenAdd] = useState(false);
+    const [isOpenUpdateAdd, setIsUpdateAdd] = useState(false);
     const [IdtoAdd, setIdtoAdd] = useState(0);
     const [LectureId, setLectureId] = useState(0);
+    const [lectureUpdateId,setLectureUpdateId]=useState(0);
+    const [UpdateAttend,setUpdateAttend]=useState(0);
     const [isSelectedToEdit, setIsSelectedToEdit] = useState({ ID: 123, first_name: 'jo', middle_initial: "josd", middle_final: "sadas", final_name: "asdas", gender: "male", dept_name: "" });
     const [oldId, setOldId] = useState(0);
     const [data, setData] = useState(null);
@@ -78,6 +82,9 @@ const TableViewer = ({ mostCommit,WhichSection,SearchParams,TextString,course_id
             console.log(error);
         }
     }
+    const closeUpdateAdd=()=>{
+        setIsUpdateAdd(false);
+    }
     useEffect(()=>{
         if(mostCommit!=0){
         bringMostCommit();
@@ -110,19 +117,19 @@ const TableViewer = ({ mostCommit,WhichSection,SearchParams,TextString,course_id
 
     },[SearchParams,TextString,Addition]);
     return (
-        <WrapperViewer>
+        <WrapperViewer style={{width:'110%'}}>
             <ColumnBar>
-                {arr.map((element, index) => (<ColumnTitle key={index}>{element}</ColumnTitle>))}
+                {arr.map((element, index) => (<ColumnTitle  style={{width:'100px'}} key={index}>{element}</ColumnTitle>))}
             </ColumnBar>
             {data && data.map((el, index) => (<ColumnRecord>
-                <ColumnTitle key={index}>{el.id}</ColumnTitle>
-                <ColumnTitle key={index}>{el.first_name}</ColumnTitle>
-                <ColumnTitle key={index}>{el.middle_initial}</ColumnTitle>
-                <ColumnTitle key={index}>{el.middle_final}</ColumnTitle>
-                <ColumnTitle key={index}>{el.final_name}</ColumnTitle>
-                <ColumnTitle key={index}>{el.gender}</ColumnTitle>
-                <ColumnTitle key={index}>{el.location}</ColumnTitle>
-                <ColumnTitle key={index}>{el.dept_name}</ColumnTitle>
+                <ColumnTitle style={{width:'100px'}} key={index}>{el.id}</ColumnTitle>
+                <ColumnTitle  style={{width:'100px'}} key={index}>{el.first_name}</ColumnTitle>
+                <ColumnTitle style={{width:'100px'}} key={index}>{el.middle_initial}</ColumnTitle>
+                <ColumnTitle style={{width:'100px'}} key={index}>{el.middle_final}</ColumnTitle>
+                <ColumnTitle style={{width:'100px'}} key={index}>{el.final_name}</ColumnTitle>
+                <ColumnTitle style={{width:'100px'}} key={index}>{el.gender}</ColumnTitle>
+                <ColumnTitle style={{width:'100px'}} key={index}>{el.location}</ColumnTitle>
+                <ColumnTitle style={{width:'100px'}} key={index}>{el.dept_name}</ColumnTitle>
                 <UpdateBtn onClick={() => {
                     openPopup();
                     setOldId(el.id);
@@ -137,6 +144,25 @@ const TableViewer = ({ mostCommit,WhichSection,SearchParams,TextString,course_id
                     setIdtoAdd(el.id);
                     setIsOpenAdd(true);
                 }}>Add Attendance</AddAttendance>
+                <UpdateBtn onClick={async()=>{
+                    try{
+                    const response=await axios.get(`http://localhost:5000/api/v1/file/studentReport/${el.id}`,{responseType:'blob'});
+                    const url = window.URL.createObjectURL(new Blob([response.data]));
+                        const link = document.createElement('a');
+                        link.href = url;
+                        link.setAttribute('download', 'file.xls');
+                        document.body.appendChild(link);
+                        link.click();
+                        console.log(response);
+                      }catch(error){
+                        showingError(error.message);
+                        console.log(error);
+                      }
+                }}>Export Report</UpdateBtn>
+                <UpdateBtn onClick={()=>{
+                    setUpdateAttend(el.id);
+                    setIsUpdateAdd(true);
+                }}>Update Attendance</UpdateBtn>
             </ColumnRecord>))}
             {/* <ColumnRecord>
     {arr1.map((element,index)=>(<ColumnTitle key={index}>{element}</ColumnTitle>))}
@@ -225,6 +251,29 @@ const TableViewer = ({ mostCommit,WhichSection,SearchParams,TextString,course_id
                 <Input onChange={(e) => {
                     setLectureId(e.target.value);
                 }} />
+            </Popup>
+            <Popup isOpen={isOpenUpdateAdd} onClose={closeUpdateAdd}>
+                <Label>Lecture ID</Label>
+                <Input onBlur={(e)=>{
+                    setLectureUpdateId(e.target.value);
+                }}/>
+                <UpdateBtn  onClick={async()=>{
+                    try{
+                        console.log({course_id,sec_id,UpdateAttend,lectureUpdateId})
+                        const response=await axios.get(`http://localhost:5000/api/v1/file/updateStudentReport/${course_id}/${sec_id}/${UpdateAttend}/${lectureUpdateId}`,{responseType:'blob'});
+                        const url = window.URL.createObjectURL(new Blob([response.data]));
+                        const link = document.createElement('a');
+                        link.href = url;
+                        link.setAttribute('download', 'file.xls');
+                        document.body.appendChild(link);
+                        link.click();
+                        console.log(response);
+                        // showingError(response.data.message)
+                    }catch(error){
+                        console.log(error);
+                        // showingError(error.data.message)
+                    }
+                }}>Update Attendance</UpdateBtn>
             </Popup>
         </WrapperViewer>
     )
