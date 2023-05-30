@@ -2,7 +2,7 @@ import {useState,useEffect} from 'react'
 import { WrapperViewer, ColumnBar, ColumnTitle, ColumnRecord, UpdateBtn, DelBtn, AddAttendance, Input } from '../TableViewer/TableViewer.styles';
 import axios from 'axios';
 import Popup from '../Popup/Popup';
-const TableViewerlectures = ({missed,SearchParams,CourseId,dept_name,recordChanges,sec_id}) => {
+const TableViewerlectures = ({missed,SearchParams,CourseId,dept_name,recordChanges,sec_id,mostAttend}) => {
     const arr=["lecture_id","sec_id","room_number","building","day","start_time","end_time"];
     const [Data,setData]=useState([]);
     const [isSelectedToEdit,setIsSelectedToEdit]=useState({lecture_id:"",sec_id:"",room_number:"",building:"",day:"",start_time:"",end_time:""});
@@ -28,11 +28,27 @@ const TableViewerlectures = ({missed,SearchParams,CourseId,dept_name,recordChang
             console.log(error);
         }
     }
+    const getMostAttendedLectures =async()=>{
+        try{
+            console.log(`http://localhost:5000/api/v1/lecture/attended/${CourseId}/${sec_id}`);
+            const response=await axios.get(`http://localhost:5000/api/v1/lecture/attended/${CourseId}/${sec_id}`);
+            console.log(response);
+            setData(response.data.commitedLectures)
+        
+        }catch(error){
+            console.log(error);
+        }
+    }
     useEffect(()=>{
         if(missed!==0){
             bringMissing();
         }
     },[missed])
+    useEffect(()=>{
+        if(mostAttend!==0){
+            getMostAttendedLectures();
+        }
+    },[mostAttend])
     const onSearch=async()=>{
         try{
             const response=await axios.get(`http://localhost:5000/api/v1/lecture/search/${CourseId}/${dept_name}/${SearchParams}`);

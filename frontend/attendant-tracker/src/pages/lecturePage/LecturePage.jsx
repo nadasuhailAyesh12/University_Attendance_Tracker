@@ -8,7 +8,7 @@ import {Wrapper,InternalWrapper,SearchBar,Input,Button} from '../StudentPage/Stu
 import TableViewerlectures from '../../components/TableViewerlectures/TableViewerlectures';
 const LecturePage = () => {
     const [dept_name_field,setDept_name_field]=useState("");
-    const [course_id,setCourse_id]=useState("");
+    const [course_id,setCourse_id]=useState("ECOM3422");
     const [firstPop,setFirstPop]=useState(true);
     const [searchParams,setSearchParams]=useState("");
     const [DummyState,setDummyState]=useState(0);
@@ -18,6 +18,8 @@ const LecturePage = () => {
     const [isYearMistake,setIsYearMistake]=useState(false);
     const [missingPop,setMissingPop]=useState(false);
     const [missedClc,setMissedClc]=useState(0);
+    const [mostAttend,setMostAttend]=useState(0);
+    const [isOpenMost,setIsOpenMost]=useState(false);
     const [sec_id,setSec_id]=useState("");
     const [ObjToAdd,setObjToAdd]=useState({lecture_id:"",sec_id:"",room_number:"",building:"",day:"",start_time:"",end_time:"",semester:"",year:""})
     const closeFirstPopUp=()=>{
@@ -25,6 +27,9 @@ const LecturePage = () => {
     }
     const closeAddPopUp=()=>{
         setIsSelectedAdd(false);
+    }
+    const closeMostPopUp=()=>{
+        setIsOpenMost(false);
     }
     const getAllCourses=async()=>{
         try{
@@ -106,13 +111,15 @@ const LecturePage = () => {
             </Selector>
             </SearchBar>
             <SearchBar>
-            <Button style={{width:'250px'}}>Get most attended lectures</Button>
+            <Button style={{width:'250px'}} onClick={()=>{
+                setIsOpenMost(true);
+            }}>Get most attended lectures</Button>
             <Button style={{width:'300px'}} onClick={()=>{
                 setMissingPop(true);
             }}>Get lectures have missing student more</Button>
             </SearchBar>
             <TableViewerlectures SearchParams={searchParams} CourseId={course_id} dept_name={dept_name_field}
-                recordChanges={DummyState} missed={missedClc} sec_id={sec_id}
+                recordChanges={DummyState} missed={missedClc} sec_id={sec_id} mostAttend={mostAttend}
             />
         </InternalWrapper>
         <Popup isOpen={firstPop} onClose={closeFirstPopUp}>
@@ -215,6 +222,15 @@ const LecturePage = () => {
             <UpdateBtn onClick={()=>{
                 setMissedClc((prev)=>prev+1);
             }}>Get Missing</UpdateBtn>
+        </Popup>
+        <Popup isOpen={isOpenMost} onClose={closeMostPopUp}>
+            <Label>Sec ID</Label>
+            <Input onBlur={(e)=>{
+                setSec_id(e.target.value);
+            }}/>
+            <UpdateBtn onClick={()=>{
+                setMostAttend((prev)=>prev+1);
+            }}>Get Most attended</UpdateBtn>
         </Popup>
     </Wrapper>
   )
