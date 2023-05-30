@@ -1,21 +1,17 @@
 const ExcelJS = require('exceljs')
 
-const db = require("../models/seeding/Connection");
-
-const exportHelper = (keys) => {
+const exportHelper = (data, res) => {
     const workbook = new ExcelJS.Workbook();
-    // Create a new worksheet within the workbook
     const worksheet = workbook.addWorksheet('Sheet 1');
-    const generateCloumnsHeaders = () => {
-        const cloumns = []
-        for (let i = 0; i < keys.length; i++) {
-            cloumns[i] = { header: keys[i], key: keys[i], width: 15 };
-        }
-        return cloumns;
-    }
-    // Add the columns to the worksheet
-    worksheet.columns = generateCloumnsHeaders();
-    return { workbook, worksheet };
+    // Add column headers to the worksheet
+    const headers = Object.keys(data[0]);
+    worksheet.addRow(headers);
+    // Add data rows to the worksheet
+    data.forEach(row => {
+        const values = Object.values(row);
+        worksheet.addRow(values);
+    });
+    return workbook.xlsx.write(res);
 }
 
 module.exports = exportHelper

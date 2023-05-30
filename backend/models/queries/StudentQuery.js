@@ -13,6 +13,14 @@ HAVING (COUNT(*) * 100.0) / (SELECT COUNT(*) FROM lecture WHERE course_id =$1 an
     return db.any(getStudentDroppedQuery);
 }
 
+const getStudentAttendanceReport = async (id) => {
+    const getStudentAttendanceQuery = new PreparedStatement({
+        name: 'getStudentAttendance', text: `SELECT * from attendance where ID=$1 `,
+        values: [id]
+    });
+    return db.any(getStudentAttendanceQuery);
+}
+
 const search = async (argument) => {
     if (isNaN(argument)) {
         const nameArguments = argument.split(' ');
@@ -101,6 +109,13 @@ const deleteStudent = async (id) => {
     })
     await db.none(deleteQuery);
 }
+const updateStudentReport = async (course_id, sec_id, lecture_id, ID) => {
+    const updateStudenReportQuery = new PreparedStatement({
+        name: 'updateStudentReport', text: "insert into attendance VALUES($1, $2,$3,$4)"
+    });
+    await db.none(updateStudenReportQuery, [lecture_id, ID, sec_id, course_id]);
+    return db.any('select * from attendance where ID=$1', [ID])
+}
 
-const studentRepository = { getStudentsWhoAttendLessthan25Percent, registerStudentAttendance, getStudents, updateStudent, search, addStudent, getMostCommitmentStudents, deleteStudent, getStudentbyID };
+const studentRepository = { getStudentsWhoAttendLessthan25Percent, registerStudentAttendance, getStudents, updateStudent, search, addStudent, getMostCommitmentStudents, deleteStudent, getStudentbyID, getStudentAttendanceReport, updateStudentReport };
 module.exports = studentRepository;
