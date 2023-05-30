@@ -10,6 +10,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import SignUp from './pages/signUp/SignUp';
 import { useNavigate } from 'react-router-dom';
 import LecturePage from './pages/lecturePage/LecturePage';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 function App() {
   const [role,setRole]=useState("");
   return (
@@ -28,6 +30,17 @@ function App() {
             <Route path="/attendStatus" element={<AttendantStatus/>}/>
           </Routes>
         </div>
+        <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss={false}
+        draggable
+        pauseOnHover
+      />
       </Router>
       
   );

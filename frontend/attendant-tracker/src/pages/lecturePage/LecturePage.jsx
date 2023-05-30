@@ -55,9 +55,11 @@ const LecturePage = () => {
             else{
              const{lecture_id, year,sec_id,room_number,building,day,start_time,end_time,semester} =ObjToAdd;
             const response=await axios.post("http://localhost:5000/api/v1/lecture",{course_id:course_id,lecture_id,year,sec_id,building,day,start_time,end_time,semester,room_number});
+            setDummyState((prev)=>prev+1)
             console.log(response);
             }
         }catch(error){
+            setDummyState((prev)=>prev+1)
             console.log(error);
         }
     }
@@ -79,13 +81,17 @@ const LecturePage = () => {
                 setIsSelectedAdd(true);
             }}>Add Lectures</Button>
             <Label>Select course_id</Label>
-            <Selector>
+            <Selector onChange={(e)=>{
+                setCourse_id(e.target.value);
+            }}>
                 {courses.map((el,index)=>
                 (
                     <option key={index}>{el.course_id}</option>
                 ))}
             </Selector>
-            <Selector>
+            <Selector onChange={(e)=>{
+                setDept_name_field(e.target.value);
+            }}>
                 {departments.map((el,index)=>
                 (
                     <option key={index}>{el.dept_name}</option>
