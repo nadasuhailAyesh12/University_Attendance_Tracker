@@ -83,6 +83,16 @@ limit 10`,
     return students;
 }
 
+const getStudentbyID = async (id) => {
+    const getStudentByID = new PreparedStatement({
+        name: 'getStudnetWithIDQuery', text: `select ID,first_name,middle_initial,middle_final,final_name,gender,location from student
+where ID=$1`,
+        values: [id]
+    })
+    const student = await db.one(getStudentByID);
+    return student;
+}
+
 const deleteStudent = async (id) => {
     const deleteQuery = new PreparedStatement({
         name: 'deleteStudent',
@@ -92,5 +102,5 @@ const deleteStudent = async (id) => {
     await db.none(deleteQuery);
 }
 
-const studentRepository = { getStudentsWhoAttendLessthan25Percent, registerStudentAttendance, getStudents, updateStudent, search, addStudent, getMostCommitmentStudents, deleteStudent };
+const studentRepository = { getStudentsWhoAttendLessthan25Percent, registerStudentAttendance, getStudents, updateStudent, search, addStudent, getMostCommitmentStudents, deleteStudent, getStudentbyID };
 module.exports = studentRepository;
