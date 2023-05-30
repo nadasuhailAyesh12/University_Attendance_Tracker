@@ -6,7 +6,7 @@ import {Label} from '../../components/navBar/navBar.styles';
 import { UpdateBtn } from '../../components/TableViewer/TableViewer.styles';
 import {Selector} from '../lecturePage/LecturePage.styles';
 import {Wrapper,InternalWrapper,SearchBar,Input,Button} from '../StudentPage/StudentPage.styles';
-import TableViewerlectures from '../../components/TableViewerlectures/TableViewerlectures';
+import TableViewerStatus from '../../components/TableViewerStatus/TableViewerStatus';
 const AttendantStatus = () => {
     const [dept_name_field,setDept_name_field]=useState("");
     const [course_id,setCourse_id]=useState("");
@@ -27,42 +27,47 @@ const AttendantStatus = () => {
         }
         
     }
-    const getAllDepartments=async()=>{
-        try{
-        const response=await axios.get("http://localhost:5000/api/v1/department");
-        setDepartments(response.data.departments);
-        console.log(response.data);
+    // const getAllDepartments=async()=>{
+    //     try{
+    //     const response=await axios.get("http://localhost:5000/api/v1/department");
+    //     setDepartments(response.data.departments);
+    //     console.log(response.data);
         
-        }catch(error){
-            console.log(error);
-        }
+    //     }catch(error){
+    //         console.log(error);
+    //     }
         
-    }
+    // }
     useEffect(()=>{
         getAllCourses();
-        getAllDepartments();
+        // getAllDepartments();
     })
   return (
     <Wrapper>
         <NavBar/>
         <InternalWrapper>
             <SearchBar>
-                <Button style={{width:'250px'}}>Get most attended student</Button>
-                <Button style={{width:'300px'}}>Get lectures have missing student more</Button>
                 <Selector>
                 {courses.map((el,index)=>
                 (
                     <option key={index}>{el.course_id}</option>
                 ))}
             </Selector>
-            <Selector>
+            {/* <Selector>
                 {departments.map((el,index)=>
                 (
                     <option key={index}>{el.dept_name}</option>
                 ))}
-            </Selector>
+            </Selector> */}
+            <Label>Sec ID</Label>
+            <Input/>
             </SearchBar>
+            <TableViewerStatus/>
+            <Popup onOpen={firstPop} onClose={closeFirstPopUp}>
+                <Label></Label>
+            </Popup>
         </InternalWrapper>
+        
     </Wrapper>
   )
 }
