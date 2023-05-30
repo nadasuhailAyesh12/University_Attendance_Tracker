@@ -17,11 +17,11 @@ module.exports = (err, req, res, next) => {
     // }
 
     // else if (node_env === "production" || node_env === "test") {
-    if (err.code === 23505) {
+    if (err.code === '23505') {
         const message = `duplicate value violates unique constraint entered`;
         err = new ErrorHandler(message, 409);
     }
-    if (err.code === 0) {
+    if (err.code === '0') {
         const message = "document not found"
         err = new ErrorHandler(message, 404);
     }
