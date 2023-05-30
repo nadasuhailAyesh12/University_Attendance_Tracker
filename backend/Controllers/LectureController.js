@@ -1,5 +1,22 @@
 const lectureRepository = require("../models/queries/LectureQuery");
 
+const AttendanceStatus = async (req, res, next) => {
+    try {
+        const { course_id, sec_id } = req.params;
+        const data = await lectureRepository.getNumberOfAttendance(course_id, sec_id)
+        for (let i = 0; i < data.length; i++) {
+            data[i].attendanceRatio = await lectureRepository.getAttendanceRatio(course_id, sec_id, data[i].lecture_id)
+        }
+
+        res.status(200).json({
+            success: true,
+            data
+        });
+    }
+    catch (err) {
+        return next(err);
+    }
+}
 const searchLecture = async (req, res, next) => {
     try {
         const { options, course_id, dept_name } = req.params;
@@ -79,5 +96,5 @@ const insertLecture = async (req, res, next) => {
     }
 }
 
-const lectureController = { searchLecture, getLectures, updateLecture, deleteLecture, insertLecture }
+const lectureController = { searchLecture, getLectures, updateLecture, deleteLecture, insertLecture, AttendanceStatus }
 module.exports = lectureController;

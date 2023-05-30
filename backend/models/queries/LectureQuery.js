@@ -1,6 +1,30 @@
 const { PreparedStatement } = require("pg-promise");
 const db = require("../seeding/Connection");
 
+const getNumberOfAttendance = async (course_id, sec_id) => {
+    const getNumofAttendance = new PreparedStatement({
+        name: "numofAttendance",
+        text: `select lecture_id ,count(*)from attendance
+    where course_id=$1 and sec_id=$2
+    group by lecture_id`,
+        values: [course_id, sec_id]
+    })
+    const data = await db.any(getNumofAttendance);
+    return data
+}
+
+const getAttendanceRatio = async (course_id, sec_id, lecture_id) => {
+    const getAttendanceRatio = new PreparedStatement({
+        name: "AttendanceRatio",
+        text: `select COUNT(*)*100  / (SELECT COUNT(*) FROM  takes where course_id=$1 and sec_id=$2 ) as ratio
+ from attendance  
+ where course_id=$1 and sec_id=$2 and lecture_id=$3`,
+        values: [course_id, sec_id, lecture_id]
+    })
+    const { ratio } = await db.one(getAttendanceRatio);
+    return ratio
+}
+
 const addLecture = async (lecture_id, sec_id, course_id, semester, year, room_number, building, start_time, end_time, day) => {
     const insertQuery = new PreparedStatement({
         name: 'insertLecture',
@@ -49,5 +73,5 @@ const deleteLecture = async (sec_id, course_id, id) => {
 }
 
 
-const lectureRepository = { addLecture, getLectures, searchLecture, updateLecture, deleteLecture };
+const lectureRepository = { addLecture, getLectures, searchLecture, updateLecture, deleteLecture, getNumberOfAttendance, getAttendanceRatio };
 module.exports = lectureRepository;
