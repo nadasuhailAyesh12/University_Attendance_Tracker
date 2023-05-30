@@ -2,7 +2,7 @@ import {useState,useEffect} from 'react'
 import { WrapperViewer, ColumnBar, ColumnTitle, ColumnRecord, UpdateBtn, DelBtn, AddAttendance, Input } from '../TableViewer/TableViewer.styles';
 import axios from 'axios';
 import Popup from '../Popup/Popup';
-const TableViewerlectures = ({SearchParams,CourseId,dept_name,recordChanges}) => {
+const TableViewerlectures = ({missed,SearchParams,CourseId,dept_name,recordChanges,sec_id}) => {
     const arr=["lecture_id","sec_id","room_number","building","day","start_time","end_time"];
     const [Data,setData]=useState([]);
     const [isSelectedToEdit,setIsSelectedToEdit]=useState({lecture_id:"",sec_id:"",room_number:"",building:"",day:"",start_time:"",end_time:""});
@@ -20,6 +20,19 @@ const TableViewerlectures = ({SearchParams,CourseId,dept_name,recordChanges}) =>
             console.log(error);
         }
     }
+    const bringMissing=async()=>{
+        try{
+        const response=await axios.get(`http://localhost:5000/api/v1/lecture/missed/${CourseId}/${sec_id}`);
+        setData(response.data.data);
+        }catch(error){
+            console.log(error);
+        }
+    }
+    useEffect(()=>{
+        if(missed!==0){
+            bringMissing();
+        }
+    },[missed])
     const onSearch=async()=>{
         try{
             const response=await axios.get(`http://localhost:5000/api/v1/lecture/search/${CourseId}/${dept_name}/${SearchParams}`);
