@@ -98,6 +98,10 @@ const LecturePage = () => {
                 ))}
             </Selector>
             </SearchBar>
+            <SearchBar>
+            <Button style={{width:'250px'}}>Get most attended lectures</Button>
+            <Button style={{width:'300px'}}>Get lectures have missing student more</Button>
+            </SearchBar>
             <TableViewerlectures SearchParams={searchParams} CourseId={course_id} dept_name={dept_name_field}
                 recordChanges={DummyState}
             />
