@@ -24,6 +24,19 @@ const getAttendanceRatio = async (course_id, sec_id, lecture_id) => {
     const { ratio } = await db.one(getAttendanceRatio);
     return ratio
 }
+const getLecturesThatHaveAbscentRatioMoreThanAttendanceRatio = async (course_id, sec_id) => {
+    const getLecturesThatHaveMoreAbscent = new PreparedStatement({
+        name: ' getLecturesThatHaveMoreAbscent',
+        text: `SELECT lecture_id 
+FROM attendance 
+where course_id =$1 and sec_id =$2
+ group by lecture_id
+ HAVING(COUNT(*)*100  ) / (SELECT COUNT(*) FROM  takes where course_id=$1 and sec_id=$2)<50`,
+        values: [course_id, sec_id]
+    })
+    const lectures = await db.any(getLecturesThatHaveMoreAbscent)
+    return lectures;
+}
 
 const addLecture = async (lecture_id, sec_id, course_id, semester, year, room_number, building, start_time, end_time, day) => {
     const insertQuery = new PreparedStatement({
@@ -72,6 +85,15 @@ const deleteLecture = async (sec_id, course_id, id) => {
     await db.none(deleteQuery);
 }
 
+const getSpecificLecture = async (course_id, sec_id, lecture_id) => {
+    const getSpecificLectureQuery = new PreparedStatement({
+        name: 'getSpecificLecture',
+        text: 'select lecture_id,sec_id,room_number,building,day,start_time,end_time from lecture natural join course where course_id ilike $1 and lecture_id=$3 and sec_id=$2',
+        values: [course_id, sec_id, lecture_id]
+    })
+    const lecture = await db.one(getSpecificLectureQuery);
+    return lecture;
+}
 
-const lectureRepository = { addLecture, getLectures, searchLecture, updateLecture, deleteLecture, getNumberOfAttendance, getAttendanceRatio };
+const lectureRepository = { addLecture, getLectures, searchLecture, updateLecture, deleteLecture, getNumberOfAttendance, getAttendanceRatio, getLecturesThatHaveAbscentRatioMoreThanAttendanceRatio, getSpecificLecture };
 module.exports = lectureRepository;
