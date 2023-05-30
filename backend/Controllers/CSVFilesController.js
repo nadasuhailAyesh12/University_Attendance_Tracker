@@ -2,6 +2,8 @@ const db = require('../models/seeding/Connection');
 const studentRepository = require('../models/queries/StudentQuery');
 const exceljs = require('exceljs')
 const XLSX = require('xlsx');
+const lectureRepository = require('../models/queries/LectureQuery');
+const exportHelper = require('../helpers/exportFileHelper');
 
 const insertfromCsvFileToDatabase = async (req, res, next) => {
     const { sec_id, course_id, lecture_id } = req.params;
@@ -18,9 +20,29 @@ const insertfromCsvFileToDatabase = async (req, res, next) => {
             })
             .catch(error => {
                 console.error('Error inserting data:', error);
-                res.status(500).json({message:'Error while inserting data to database',success:false});
+                res.status(500).json({ message: 'Error while inserting data to database', success: false });
             });
     })
+}
+const updateStudentReport = async (req, res, next) => {
+    const { id, course_id, sec_id } = req.params
+    const { lecture_id } = req.body
+    res.setHeader(
+        'Content-Type',
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    );
+    res.setHeader(
+        'Content-Disposition',
+        'attachment; filename=data.xlsx'
+    );
+
+    studentRepository.updateStudentReport(course_id, sec_id, lecture_id, id).then
+        ((data) => exportHelper(data, res))
+        .then(() => res.end())
+        .catch(error => {
+            console.error('Error exporting data:', error);
+            res.status(500).json({ message: 'Error while exporting data ', success: false });
+        })
 }
 
 const exportStudentsWhoAttendLessthan25Percent = async (req, res) => {
@@ -61,6 +83,25 @@ const exportStudentsWhoAttendLessthan25Percent = async (req, res) => {
         })
 }
 
+const exportAttendanceStatus = (req, res) => {
+    const { id } = req.params
+    res.setHeader(
+        'Content-Type',
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    );
+    res.setHeader(
+        'Content-Disposition',
+        'attachment; filename=data.xlsx'
+    );
+    studentRepository.getStudentAttendanceReport(id).then
+        ((data) => exportHelper(data, res))
+        .then(() => res.end())
+        .catch(error => {
+            console.error('Error exporting data:', error);
+            res.status(500).json({ message: 'Error while exporting data ', success: false });
+        })
+}
 
-const csvFileController = { insertfromCsvFileToDatabase, exportStudentsWhoAttendLessthan25Percent }
+
+const csvFileController = { insertfromCsvFileToDatabase, exportStudentsWhoAttendLessthan25Percent, exportAttendanceStatus, updateStudentReport }
 module.exports = csvFileController
