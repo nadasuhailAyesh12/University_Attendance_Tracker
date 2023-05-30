@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { WrapperViewer, ColumnBar, ColumnTitle, ColumnRecord, UpdateBtn, DelBtn, AddAttendance, Input } from './TableViewer.styles';
 import Popup from '../Popup/Popup';
-const TableViewer = ({ WhichSection,SearchParams,TextString }) => {
+const TableViewer = ({ WhichSection,SearchParams,TextString,course_id,dept_name,sec_id}) => {
     const [WhichSectionSt, setWhichSectionSt] = useState(WhichSection);
     const [isOpenEdit, setIsOpenEdit] = useState(false);
     const [isOpenAdd, setIsOpenAdd] = useState(false);
@@ -48,8 +48,10 @@ const TableViewer = ({ WhichSection,SearchParams,TextString }) => {
     const onFirstLoad=() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get('http://localhost:5000/api/v1/student');
+                const response = await axios.get(`http://localhost:5000/api/v1/student/${dept_name}/${course_id}/${sec_id}`);
+                console.log("First Load is Here")
                 setData(response.data.students);
+                console.log(sec_id);
             } catch (error) {
                 console.log(error);
             }
@@ -57,7 +59,7 @@ const TableViewer = ({ WhichSection,SearchParams,TextString }) => {
 
         fetchData(); // Call the fetchData function
     }
-    useEffect(onFirstLoad, []);
+    useEffect(onFirstLoad, [sec_id,course_id,dept_name]);
     const onDeleteRecord=async(id)=>{
         try{
             console.log(id);
