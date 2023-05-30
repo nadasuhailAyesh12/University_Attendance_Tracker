@@ -41,8 +41,7 @@ const getStudents = async (req, res, next) => {
         })
     }
     catch (err) {
-        // return next(err)
-        console.log(err)
+        return next(err)
     }
 }
 
@@ -53,7 +52,7 @@ const updateStudent = async (req, res, next) => {
         await studentRepository.updateStudent(oldID, first_name, middle_initial, middle_final, final_name, dept_name, location, ID);
         res.status(200).json({
             success: true,
-            message: 'nada'
+            message: 'student updated successfuly'
         })
     }
     catch (err) {
@@ -67,7 +66,7 @@ const addStudent = async (req, res, next) => {
         await studentRepository.addStudent(id, first_name, middle_initial, middle_final, final_name, gender, location, dept_name);
         res.status(200).json({
             success: true,
-            message: 'added successfuly'
+            message: ' student added successfuly'
         })
     }
     catch (err) {
@@ -75,5 +74,35 @@ const addStudent = async (req, res, next) => {
     }
 }
 
-const StudentController = { addAttendance, getStudents, updateStudent, search, addStudent }
+const getMostCommitedStudents = async (req, res, next) => {
+    try {
+        const { course_id, sec_id } = req.params;
+        const students = await studentRepository.getMostCommitmentStudents(course_id, sec_id)
+        res.status(200).json({
+            success: true,
+            students
+        })
+    }
+    catch (err) {
+        return next(err)
+    }
+}
+
+
+const deleteStudent = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        await studentRepository.deleteStudent(id)
+
+        res.status(200).json({
+            success: true,
+            message: "student deleted successfuly"
+        });
+    }
+    catch (err) {
+        return next(err);
+    }
+}
+
+const StudentController = { addAttendance, getStudents, updateStudent, search, addStudent, getMostCommitedStudents, deleteStudent }
 module.exports = StudentController;

@@ -3,7 +3,7 @@ const { PreparedStatement } = require("pg-promise")
 
 const getStudentsWhoAttendLessthan25Percent = async (course_id, sec_id) => {
     const getStudentDroppedQuery = new PreparedStatement({
-        name: 'getStudentByID', text: `SELECT student.ID from student natural join takes
+        name: 'getStudentDropped', text: `SELECT student.ID from student natural join takes
  where ID  not in (select attendance.ID FROM attendance 
     WHERE course_id = $1 and sec_id=$2
     GROUP BY attendance.ID
@@ -35,18 +35,6 @@ const search = async (argument) => {
         const user = await db.one(searchQuery, [argument]);
         return user;
     }
-}
-
-const getStudentByphone = async (phone_number) => {
-    const getStudentByphoneQuery = new PreparedStatement({ name: 'getStudentByPhone', text: "select * from student natural join student_phone where phone_number = $1", values: [phone_number] });
-    const user = await db.one(getStudentByphoneQuery);
-    return user;
-}
-
-const getStudentByName = async (firstName, middle_initial, middle_final, final_name) => {
-    const getStudentByNameQuery = new PreparedStatement({ name: 'getStudentByID', text: "select * from student where first_name= $1 and middle_initial=$2 and middle_final=$3 and final_name=$4" });
-    const user = await db.one(getStudentByNameQuery, [firstName, middle_initial, middle_final, final_name]);
-    return user;
 }
 
 const registerStudentAttendance = async (lecture_id, ID, sec_id, course_id) => {
@@ -81,6 +69,28 @@ const addStudent = async (ID, first_name, middle_initial, middle_final, final_na
     addStudentQuery.values = [ID, first_name, middle_initial, middle_final, final_name, gender, location, dept_name];
     await db.none(addStudentQuery);
 }
+const getMostCommitmentStudents = async (course_id, sec_id) => {
+    const getStudentmostCommitmenQuery = new PreparedStatement({
+        name: 'getmostStudnetsQuery', text: `SELECT ID ,COUNT(*) AS count
+FROM attendance  
+where course_id =$1 and sec_id =$2
+GROUP BY  id 
+ORDER BY count desc
+limit 10`,
+        values: [course_id, sec_id]
+    })
+    const students = await db.any(getStudentmostCommitmenQuery);
+    return students;
+}
 
-const studentRepository = { getStudentsWhoAttendLessthan25Percent, getStudentByphone, getStudentByName, registerStudentAttendance, getStudents, updateStudent, search, addStudent };
+const deleteStudent = async (id) => {
+    const deleteQuery = new PreparedStatement({
+        name: 'deleteStudent',
+        text: 'delete from student where ID=$1',
+        values: [id]
+    })
+    await db.none(deleteQuery);
+}
+
+const studentRepository = { getStudentsWhoAttendLessthan25Percent, registerStudentAttendance, getStudents, updateStudent, search, addStudent, getMostCommitmentStudents, deleteStudent };
 module.exports = studentRepository;
