@@ -23,6 +23,7 @@ const StudentPage = ({role,setRole}) => {
   const [isFOpen,setIsFOpen]=useState(true);
   const [showingID,setShowingID]=useState("");
   const [AddOpen,setAddOpen]=useState(false);
+  const [mostComitted,setMostComitted]=useState(0);
   const [isSelectedToAdd,setIsSelectedToAdd]=useState({id:"",first_name:"",middle_initial:"",middle_final:"",final_name:"",dept_name:"",location:""});
   const [addition,setAddition]=useState(0);
   // ID, first_name, middle_initial, middle_final, final_name, dept_name, location
@@ -159,8 +160,11 @@ useEffect(()=>{
               exportStd();
             }}>Export Excel Sheet for Students who attend less 25% of courses lectures</Button>
             <Button onClick={()=>{setAddOpen(true)}}>Add Student</Button>
+            <Button style={{width:"300px"}} onClick={()=>{
+              setMostComitted((prev)=>prev+1);
+            }}>View Most Commitment</Button>
         </SearchBar>
-        <TableViewer WhichSection="student"  TextString={TextString} course_id={course_id} dept_name={dept_name_field} sec_id={sec_id} Addition={addition}/>
+        <TableViewer WhichSection="student"  TextString={TextString} course_id={course_id} dept_name={dept_name_field} sec_id={sec_id} Addition={addition} mostCommit={mostComitted}/>
     </InternalWrapper>
     <Popup isOpen={isOpenToImport} onClose={closePopup}>
       <Label>Lecture ID</Label>
