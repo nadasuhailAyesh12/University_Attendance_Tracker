@@ -16,6 +16,9 @@ const LecturePage = () => {
     const [departments,setDepartments]=useState([]);
     const [isSelectedAdd,setIsSelectedAdd]=useState(false);
     const [isYearMistake,setIsYearMistake]=useState(false);
+    const [missingPop,setMissingPop]=useState(false);
+    const [missedClc,setMissedClc]=useState(0);
+    const [sec_id,setSec_id]=useState("");
     const [ObjToAdd,setObjToAdd]=useState({lecture_id:"",sec_id:"",room_number:"",building:"",day:"",start_time:"",end_time:"",semester:"",year:""})
     const closeFirstPopUp=()=>{
         setFirstPop(false);
@@ -45,6 +48,9 @@ const LecturePage = () => {
         }
         
     }
+    const closeMissingPop=()=>{
+        setMissingPop(false);
+    }
     const AddLectures=async()=>{
         console.log("added");
         try{
@@ -66,7 +72,8 @@ const LecturePage = () => {
     useEffect(()=>{
         getAllCourses();
         getAllDepartments();
-    },[])
+    },[]);
+    
   return (
     <Wrapper>
         <NavBar/>
@@ -100,10 +107,12 @@ const LecturePage = () => {
             </SearchBar>
             <SearchBar>
             <Button style={{width:'250px'}}>Get most attended lectures</Button>
-            <Button style={{width:'300px'}}>Get lectures have missing student more</Button>
+            <Button style={{width:'300px'}} onClick={()=>{
+                setMissingPop(true);
+            }}>Get lectures have missing student more</Button>
             </SearchBar>
             <TableViewerlectures SearchParams={searchParams} CourseId={course_id} dept_name={dept_name_field}
-                recordChanges={DummyState}
+                recordChanges={DummyState} missed={missedClc} sec_id={sec_id}
             />
         </InternalWrapper>
         <Popup isOpen={firstPop} onClose={closeFirstPopUp}>
@@ -198,7 +207,15 @@ const LecturePage = () => {
                 AddLectures();
             }}>Add Lectures</UpdateBtn>
         </Popup>
-
+        <Popup isOpen={missingPop} onClose={closeMissingPop}>
+            <Label>Sec ID</Label>
+            <Input onBlur={(e)=>{
+                setSec_id(e.target.value);
+            }}/>
+            <UpdateBtn onClick={()=>{
+                setMissedClc((prev)=>prev+1);
+            }}>Get Missing</UpdateBtn>
+        </Popup>
     </Wrapper>
   )
 }
