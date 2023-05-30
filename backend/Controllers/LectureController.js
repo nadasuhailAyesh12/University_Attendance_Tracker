@@ -114,5 +114,23 @@ const insertLecture = async (req, res, next) => {
     }
 }
 
-const lectureController = { searchLecture, getLectures, updateLecture, deleteLecture, insertLecture, AttendanceStatus, getLectureThatHavemoremissedthanattended }
+const getMostAttendedLectures = async (req, res, next) => {
+    try {
+        const { course_id, sec_id } = req.params;
+        const lectures = await lectureRepository.getMostattendedLectures(course_id, sec_id)
+        const commitedLectures = []
+        for (let i = 0; i < lectures.length; i++) {
+            commitedLectures[i] = await lectureRepository.getSpecificLecture(course_id, sec_id, lectures[i].lecture_id)
+        }
+        res.status(200).json({
+            success: true,
+            commitedLectures
+        })
+    }
+    catch (err) {
+        return next(err)
+    }
+}
+
+const lectureController = { searchLecture, getLectures, updateLecture, deleteLecture, insertLecture, AttendanceStatus, getLectureThatHavemoremissedthanattended, getMostAttendedLectures }
 module.exports = lectureController;

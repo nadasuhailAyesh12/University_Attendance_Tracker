@@ -13,6 +13,20 @@ const getNumberOfAttendance = async (course_id, sec_id) => {
     return data
 }
 
+const getMostattendedLectures = async (course_id, sec_id) => {
+    const getMostattendedLectures = new PreparedStatement({
+        name: "mostattendedlectures",
+        text: `select lecture_id ,count(*) as count from attendance
+    where course_id=$1 and sec_id=$2
+    group by lecture_id
+    order by count desc
+    limit 10`,
+        values: [course_id, sec_id]
+    })
+    const lectures = await db.any(getMostattendedLectures);
+    return lectures;
+}
+
 const getAttendanceRatio = async (course_id, sec_id, lecture_id) => {
     const getAttendanceRatio = new PreparedStatement({
         name: "AttendanceRatio",
@@ -95,5 +109,5 @@ const getSpecificLecture = async (course_id, sec_id, lecture_id) => {
     return lecture;
 }
 
-const lectureRepository = { addLecture, getLectures, searchLecture, updateLecture, deleteLecture, getNumberOfAttendance, getAttendanceRatio, getLecturesThatHaveAbscentRatioMoreThanAttendanceRatio, getSpecificLecture };
+const lectureRepository = { addLecture, getLectures, searchLecture, updateLecture, deleteLecture, getNumberOfAttendance, getAttendanceRatio, getLecturesThatHaveAbscentRatioMoreThanAttendanceRatio, getSpecificLecture, getMostattendedLectures };
 module.exports = lectureRepository;
