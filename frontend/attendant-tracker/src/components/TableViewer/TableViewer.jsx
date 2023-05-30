@@ -3,7 +3,7 @@ import axios from 'axios';
 import { WrapperViewer, ColumnBar, ColumnTitle, ColumnRecord, UpdateBtn, DelBtn, AddAttendance, Input } from './TableViewer.styles';
 import Popup from '../Popup/Popup';
 import { ToastContainer, toast } from 'react-toastify';
-const TableViewer = ({ WhichSection,SearchParams,TextString,course_id,dept_name,sec_id,Addition}) => {
+const TableViewer = ({ mostCommit,WhichSection,SearchParams,TextString,course_id,dept_name,sec_id,Addition}) => {
     const [WhichSectionSt, setWhichSectionSt] = useState(WhichSection);
     const [isOpenEdit, setIsOpenEdit] = useState(false);
     const [isOpenAdd, setIsOpenAdd] = useState(false);
@@ -49,6 +49,11 @@ const TableViewer = ({ WhichSection,SearchParams,TextString,course_id,dept_name,
         const res = await axios.post(`http://localhost:5000/api/v1/student/attend/${IdtoAdd}`, { lecture_id: LectureId });
         console.log(res);
     }
+    const bringMostCommit=async()=>{
+        const res=await axios.get(`http://localhost:5000/api/v1/student/attend/${course_id}/${sec_id}`);;
+        console.log(res.data);
+        setData(res.data.commitedStudents);
+    }
     const onFirstLoad=() => {
         const fetchData = async () => {
             try {
@@ -73,6 +78,11 @@ const TableViewer = ({ WhichSection,SearchParams,TextString,course_id,dept_name,
             console.log(error);
         }
     }
+    useEffect(()=>{
+        if(mostCommit!=0){
+        bringMostCommit();
+        }
+    },[mostCommit])
     useEffect(onFirstLoad, [sec_id,course_id,dept_name]);
     const onDeleteRecord=async(id)=>{
         try{
