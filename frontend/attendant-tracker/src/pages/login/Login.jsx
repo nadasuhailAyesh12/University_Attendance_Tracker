@@ -59,7 +59,9 @@ const Login = ({role,setRole}) => {
           {LoginError && <Label style={{ color: "#8b0000" }}>Password or Id not correct</Label>}
           <SignInBtn type='submit'>Log in</SignInBtn>
           <DontHaveLabel>Dont have an account?</DontHaveLabel>
-          <SignUpLabel>Sign Up</SignUpLabel>
+          <SignUpLabel onClick={()=>{
+            navigate('/signup');
+          }}>Sign Up</SignUpLabel>
         </InternalWrapper>
       </LoginForm>
     </Wrapper>

@@ -24,6 +24,7 @@ const StudentPage = ({ role, setRole }) => {
   const [showingID, setShowingID] = useState("");
   const [AddOpen, setAddOpen] = useState(false);
   const [mostComitted, setMostComitted] = useState(0);
+  const [consecutive,setConsecutive]=useState(0);
   const [isSelectedToAdd, setIsSelectedToAdd] = useState({ id: "", first_name: "", middle_initial: "", middle_final: "", final_name: "", dept_name: "", location: "" });
   const [addition, setAddition] = useState(0);
   // ID, first_name, middle_initial, middle_final, final_name, dept_name, location
@@ -164,7 +165,12 @@ const StudentPage = ({ role, setRole }) => {
             setMostComitted((prev) => prev + 1);
           }}>View Most Commitment</Button>
         </SearchBar>
-        <TableViewer WhichSection="student" TextString={TextString} course_id={course_id} dept_name={dept_name_field} sec_id={sec_id} Addition={addition} mostCommit={mostComitted} />
+        <SearchBar>
+          <Button style={{width:'430px'}} onClick={()=>{
+            setConsecutive(prev=> prev+1);
+          }}>get Student Who miss more than 3 consecutive lectures</Button>
+        </SearchBar>
+        <TableViewer WhichSection="student" TextString={TextString} course_id={course_id} dept_name={dept_name_field} sec_id={sec_id} Addition={addition} mostCommit={mostComitted} SearchParams={SearchParams} Consecutive={consecutive} />
       </InternalWrapper>
       <Popup isOpen={isOpenToImport} onClose={closePopup}>
         <Label>Lecture ID</Label>

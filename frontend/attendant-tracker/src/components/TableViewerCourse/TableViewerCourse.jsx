@@ -13,7 +13,7 @@ const TableViewerCourse=({recordChanges,TextString})=>{
     const [IDShowing,setIDShowing]=useState("");
     const [sectionRelated,setSectionRelated]=useState([]);
     const [isOpenAddSec,setIsOpenAddSec]=useState(false);
-    const [AddedSection,setAddedSection]=useState({sec_id:"",semester:"",year:"",room_number:"",builidng:"",start_time:"",end_time:"",day:"",ID:""});
+    const [AddedSection,setAddedSection]=useState({sec_id:"",semester:"",year:"",room_number:"",building:"",start_time:"",end_time:"",day:"",ID:""});
     // sec_id, semester, year, room_number, building, start_time, end_time, day, ID
 
     const onFirstLoad=async()=>{

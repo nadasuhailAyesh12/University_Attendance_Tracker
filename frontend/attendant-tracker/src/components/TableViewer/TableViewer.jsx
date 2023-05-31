@@ -4,7 +4,7 @@ import { WrapperViewer, ColumnBar, ColumnTitle, ColumnRecord, UpdateBtn, DelBtn,
 import Popup from '../Popup/Popup';
 import { ToastContainer, toast } from 'react-toastify';
 import { Label } from '../navBar/navBar.styles';
-const TableViewer = ({ mostCommit,WhichSection,SearchParams,TextString,course_id,dept_name,sec_id,Addition}) => {
+const TableViewer = ({ mostCommit,WhichSection,TextString,course_id,dept_name,sec_id,Addition,SearchParams,Consecutive}) => {
     const [WhichSectionSt, setWhichSectionSt] = useState(WhichSection);
     const [isOpenEdit, setIsOpenEdit] = useState(false);
     const [isOpenAdd, setIsOpenAdd] = useState(false);
@@ -74,6 +74,21 @@ const TableViewer = ({ mostCommit,WhichSection,SearchParams,TextString,course_id
 
         fetchData(); // Call the fetchData function
     }
+    const onFirstLoading=()=>{
+        const fetchData = async () => {
+            try {
+                const response = await axios.get(`http://localhost:5000/api/v1/student`);
+                console.log("First Load is Here")
+                setData(response.data.students);
+                console.log(sec_id);
+            } catch (error) {
+                showingError(error.message);
+                console.log(error);
+            }
+        };
+
+        fetchData();
+    }
     const onSearch=async()=>{
         try{
         const response=await axios.get(`http://localhost:5000/api/v1/student/search/${TextString}`);
@@ -88,15 +103,32 @@ const TableViewer = ({ mostCommit,WhichSection,SearchParams,TextString,course_id
     //         const response=await axios.get('')
     //     }
     // }
+    const onGetConsecutive=async()=>{
+        try{
+            const response=await axios.get(`http://localhost:5000/api/v1/student/misthreeconsecutive`);
+            setData(response.data.uncommitedStudents);
+        }catch(error){
+            console.log(error);
+        }
+    }
     const closeUpdateAdd=()=>{
         setIsUpdateAdd(false);
     }
+    useEffect(()=>{
+        if(Consecutive!==0){
+            onGetConsecutive();
+        }
+    },[Consecutive])
     useEffect(()=>{
         if(mostCommit!=0){
         bringMostCommit();
         }
     },[mostCommit])
-    useEffect(onFirstLoad, [sec_id,course_id,dept_name]);
+    useEffect(()=>{
+        if(SearchParams!==0){
+            onFirstLoad();
+        }
+    } ,[sec_id,course_id,dept_name]);
     const onDeleteRecord=async(id)=>{
         try{
             console.log(id);
@@ -111,7 +143,10 @@ const TableViewer = ({ mostCommit,WhichSection,SearchParams,TextString,course_id
     useEffect(()=>{
         const fetch = async () => {
             console.log(SearchParams);
-            if(TextString===""){
+            if(TextString==="" && SearchParams===0){
+                onFirstLoading();
+            }
+            else if(TextString==="" && SearchParams!==0){
                 onFirstLoad();
             }
             else{

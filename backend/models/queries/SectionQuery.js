@@ -8,8 +8,8 @@ const insertSection = async (sec_id, course_id, semester, year, ID) => {
 
 const getSectionsRelatedtoCourse = async (id) => {
     const getQuery = new PreparedStatement({
-        name: 'section', text:
-            'select sec_id,course_id,building,room_number,day,start_time,end_time from section natural join lecture where course_id=$1'
+        name: 'getsectionSRelated', text:
+            'select distinct sec_id,course_id,building,room_number,day,start_time,end_time from section natural join lecture where course_id=$1'
     })
     const sections = await db.any(getQuery, [id]);
     return sections;
