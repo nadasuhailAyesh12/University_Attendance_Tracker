@@ -21,6 +21,7 @@ const addCourse = async (req, res, next) => {
 
         res.status(200).json({
             success: true,
+            message: "course add successfuly"
         });
     }
     catch (err) {
@@ -36,6 +37,7 @@ const updateCourse = async (req, res, next) => {
 
         res.status(200).json({
             success: true,
+            message: 'course updated successfuly'
         });
     }
     catch (err) {
@@ -50,6 +52,7 @@ const deleteCourse = async (req, res, next) => {
 
         res.status(200).json({
             success: true,
+            message: 'course deleted successfuly'
         });
     }
     catch (err) {

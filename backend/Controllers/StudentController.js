@@ -1,4 +1,5 @@
 const studentRepository = require("../models/queries/StudentQuery");
+const db = require("../models/seeding/Connection");
 
 const search = async (req, res, next) => {
     try {
@@ -93,6 +94,23 @@ const getMostCommitedStudents = async (req, res, next) => {
     }
 }
 
+const getStudentsWhomiss3ConsecutiveLectures = async (req, res, next) => {
+    try {
+        const students = await studentRepository.getStudentsWhomissed3consecutiveLectures()
+        const uncommitedStudents = []
+        for (let i = 0; i < students.length; i++) {
+            uncommitedStudents[i] = await studentRepository.getStudentbyID(students[i].id)
+        }
+
+        res.status(200).json({
+            success: true,
+            uncommitedStudents
+        })
+    }
+    catch (err) {
+        return next(err)
+    }
+}
 
 const deleteStudent = async (req, res, next) => {
     try {
@@ -109,5 +127,19 @@ const deleteStudent = async (req, res, next) => {
     }
 }
 
-const StudentController = { addAttendance, getStudents, updateStudent, search, addStudent, getMostCommitedStudents, deleteStudent }
+const getAllStudents = async (req, res, next) => {
+    try {
+        const students = await db.any('select * from student')
+
+        res.status(200).json({
+            success: true,
+            students
+        });
+    }
+    catch (err) {
+        return next(err);
+    }
+}
+
+const StudentController = { addAttendance, getStudents, updateStudent, search, addStudent, getMostCommitedStudents, deleteStudent, getStudentsWhomiss3ConsecutiveLectures, getAllStudents }
 module.exports = StudentController;

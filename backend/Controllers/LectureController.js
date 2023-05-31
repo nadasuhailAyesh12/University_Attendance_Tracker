@@ -78,6 +78,7 @@ const updateLecture = async (req, res, next) => {
 
         res.status(200).json({
             success: true,
+            message: 'lecture updated successfuly'
         });
     }
     catch (err) {
@@ -90,8 +91,9 @@ const deleteLecture = async (req, res, next) => {
         const { id, course_id, sec_id } = req.params;
         await lectureRepository.deleteLecture(sec_id, course_id, id)
 
-        res.status(204).json({
+        res.status(200).json({
             success: true,
+            message: "lecture deleted successfuly"
         });
     }
     catch (err) {
@@ -107,6 +109,7 @@ const insertLecture = async (req, res, next) => {
 
         res.status(200).json({
             success: true,
+            message: 'lecture add successfuly'
         });
     }
     catch (err) {

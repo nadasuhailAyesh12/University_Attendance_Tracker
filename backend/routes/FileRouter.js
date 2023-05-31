@@ -1,4 +1,4 @@
-const csvFileController = require("../Controllers/CSVFilesController");
+const ExcelFilesController = require("../Controllers/ExcelFilesController");
 const fileRouter = require('express').Router();
 
 fileRouter.get('/dropped/:course_id/:sec_id', csvFileController.exportStudentsWhoAttendLessthan25Percent)

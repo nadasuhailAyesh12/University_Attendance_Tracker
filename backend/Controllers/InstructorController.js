@@ -7,6 +7,7 @@ const addInstructor = async (req, res, next) => {
 
         res.status(200).json({
             success: true,
+            message: 'instructor added successfuly'
         });
     }
     catch (error) {
@@ -22,6 +23,7 @@ const updateInstructor = async (req, res, next) => {
 
         res.status(200).json({
             success: true,
+            message: 'instructor updated successfuly'
         });
     }
     catch (error) {
@@ -34,8 +36,9 @@ const deleteInstructor = async (req, res, next) => {
         const { id } = req.params;
         await instructorRepository.deleteInstructor(id)
 
-        res.status(204).json({
+        res.status(200).json({
             success: true,
+            message: "instructor deleted successfuly"
         });
     }
     catch (error) {
