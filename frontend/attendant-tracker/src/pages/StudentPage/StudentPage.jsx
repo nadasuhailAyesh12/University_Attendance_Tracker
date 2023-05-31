@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import NavBar from '../../components/navBar/NavBar';
 import { Wrapper, InternalWrapper, SearchBar, Input, Button } from './StudentPage.styles';
-import { UpdateBtn } from '../../components/TableViewer/TableViewer.styles';
+import { UpdateBtn,ColumnBar,ColumnTitle,ColumnRecord,WrapperViewer } from '../../components/TableViewer/TableViewer.styles';
 import axios from 'axios';
 import { Label } from '../../components/navBar/navBar.styles';
 import TableViewer from '../../components/TableViewer/TableViewer';
@@ -23,6 +23,8 @@ const StudentPage = ({ role, setRole }) => {
   const [isFOpen, setIsFOpen] = useState(true);
   const [showingID, setShowingID] = useState("");
   const [AddOpen, setAddOpen] = useState(false);
+  const [OpenSLect,setOpenSLect]=useState(false);
+  const [lectMis,setLectMiss]=useState([]);
   const [mostComitted, setMostComitted] = useState(0);
   const [consecutive,setConsecutive]=useState(0);
   const [isSelectedToAdd, setIsSelectedToAdd] = useState({ id: "", first_name: "", middle_initial: "", middle_final: "", final_name: "", dept_name: "", location: "" });
@@ -50,6 +52,9 @@ const StudentPage = ({ role, setRole }) => {
   const closeFOpen = () => {
     setIsFOpen(false);
   }
+  const closeOpenS=()=>{
+    setOpenSLect(true);
+  }
   const handleUpload = () => {
     if (selectedFile) {
       const formData = new FormData();
@@ -75,7 +80,7 @@ const StudentPage = ({ role, setRole }) => {
       console.log(response.data);
 
     } catch (error) {
-      showingError(error.message);
+      showingError(error.response.data.message);
     }
 
   }
@@ -86,7 +91,7 @@ const StudentPage = ({ role, setRole }) => {
       console.log(response.data);
 
     } catch (error) {
-      showingError(error.message);
+      showingError(error.response.data.message);
       console.log(error);
     }
 
@@ -103,7 +108,7 @@ const StudentPage = ({ role, setRole }) => {
       link.click();
       console.log(response);
     } catch (error) {
-      showingError(error.message);
+      showingError(error.response.data.message);
       console.log(error);
     }
   }
@@ -116,7 +121,7 @@ const StudentPage = ({ role, setRole }) => {
       showingError(response.data.message);
     } catch (error) {
       console.log(error);
-      showingError(error.message);
+      showingError(error.response.data.message);
     }
   }
   useEffect(() => {
@@ -169,6 +174,9 @@ const StudentPage = ({ role, setRole }) => {
           <Button style={{width:'430px'}} onClick={()=>{
             setConsecutive(prev=> prev+1);
           }}>get Student Who miss more than 3 consecutive lectures</Button>
+          <Button style={{width:'450px'}} onClick={()=>{
+            setOpenSLect(true);
+          }}>Get missing lectures for student attend most of lectures</Button>
         </SearchBar>
         <TableViewer WhichSection="student" TextString={TextString} course_id={course_id} dept_name={dept_name_field} sec_id={sec_id} Addition={addition} mostCommit={mostComitted} SearchParams={SearchParams} Consecutive={consecutive} />
       </InternalWrapper>
@@ -259,6 +267,13 @@ const StudentPage = ({ role, setRole }) => {
         <UpdateBtn onClick={() => {
           addStd();
         }}>Add Std</UpdateBtn>
+      </Popup>
+      <Popup isOpen={OpenSLect} onClose={closeOpenS}>
+        <WrapperViewer/>
+        <ColumnBar>
+          <ColumnTitle>Std ID</ColumnTitle>
+          <ColumnTitle>lecture ID</ColumnTitle>
+        </ColumnBar>
       </Popup>
     </Wrapper>
   )

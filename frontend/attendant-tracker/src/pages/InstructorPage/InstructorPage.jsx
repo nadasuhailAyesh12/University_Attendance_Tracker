@@ -6,6 +6,7 @@ import {Wrapper,InternalWrapper,SearchBar,Input,Button} from '../StudentPage/Stu
 import {Label} from '../../components/navBar/navBar.styles';
 import TableViewInstructor from '../../components/TableViewInstructor/TableViewInstructor';
 import {UpdateBtn} from '../../components/TableViewer/TableViewer.styles';
+import { showingError } from '../../App';
 const InstructorPage = () => {
     const [TextString,setTextString]=useState("");
     const [isOpenToAdd,setIsOpenToAdd]=useState(false);
@@ -21,7 +22,7 @@ const InstructorPage = () => {
         const response=await axios.post("http://localhost:5000/api/v1/instructor",{id:ID,name,dept_name,role});
         console.log(response);
       }catch(err){
-        console.log(err);
+        showingError(err.response.data.message);
       }
     }
   return (

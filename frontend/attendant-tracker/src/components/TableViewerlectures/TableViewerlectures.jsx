@@ -2,6 +2,7 @@ import {useState,useEffect} from 'react'
 import { WrapperViewer, ColumnBar, ColumnTitle, ColumnRecord, UpdateBtn, DelBtn, AddAttendance, Input } from '../TableViewer/TableViewer.styles';
 import axios from 'axios';
 import Popup from '../Popup/Popup';
+import { showingError } from '../../App';
 const TableViewerlectures = ({missed,SearchParams,CourseId,dept_name,recordChanges,sec_id,mostAttend}) => {
     const arr=["lecture_id","sec_id","room_number","building","day","start_time","end_time"];
     const [Data,setData]=useState([]);
@@ -17,6 +18,7 @@ const TableViewerlectures = ({missed,SearchParams,CourseId,dept_name,recordChang
         setData(response.data.lectures);
         console.log(response.data);
         }catch(error){
+            showingError(error.response.data.message);
             console.log(error);
         }
     }
@@ -25,6 +27,7 @@ const TableViewerlectures = ({missed,SearchParams,CourseId,dept_name,recordChang
         const response=await axios.get(`http://localhost:5000/api/v1/lecture/missed/${CourseId}/${sec_id}`);
         setData(response.data.data);
         }catch(error){
+            showingError(error.response.data.message);
             console.log(error);
         }
     }
@@ -36,6 +39,7 @@ const TableViewerlectures = ({missed,SearchParams,CourseId,dept_name,recordChang
             setData(response.data.commitedLectures)
         
         }catch(error){
+            showingError(error.response.data.message);
             console.log(error);
         }
     }
@@ -56,6 +60,7 @@ const TableViewerlectures = ({missed,SearchParams,CourseId,dept_name,recordChang
             setData([response.data.lecture]);
             console.log(response.data);
         }catch(error){
+            showingError(error.response.data.message);
             console.log(error);
         }
     }
@@ -68,6 +73,7 @@ const TableViewerlectures = ({missed,SearchParams,CourseId,dept_name,recordChang
             console.log(response.data);
             onFirstLoad();
         }catch(error){
+            showingError(error.response.data.message);
             console.log(error);
         }
     }
@@ -89,6 +95,7 @@ const TableViewerlectures = ({missed,SearchParams,CourseId,dept_name,recordChang
             console.log(response);
             onFirstLoad();
         }catch(error){
+            showingError(error.response.data.message);
             console.log(error);
             // onFirstLoad();
         }
