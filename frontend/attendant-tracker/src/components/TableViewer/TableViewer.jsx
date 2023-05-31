@@ -50,10 +50,11 @@ const TableViewer = ({ mostCommit,WhichSection,SearchParams,TextString,course_id
     }
     console.log(LectureId);
     const onAddAttendance = async () => {
-        const res = await axios.post(`http://localhost:5000/api/v1/student/attend/${IdtoAdd}`, { lecture_id: LectureId });
+        const res = await axios.post(`http://localhost:5000/api/v1/student/attend/${course_id}/${sec_id}/${IdtoAdd}`, { lecture_id: LectureId });
         console.log(res);
     }
     const bringMostCommit=async()=>{
+        console.log(`http://localhost:5000/api/v1/student/attend/${course_id}/${sec_id}`);
         const res=await axios.get(`http://localhost:5000/api/v1/student/attend/${course_id}/${sec_id}`);;
         console.log(res.data);
         setData(res.data.commitedStudents);
@@ -82,6 +83,11 @@ const TableViewer = ({ mostCommit,WhichSection,SearchParams,TextString,course_id
             console.log(error);
         }
     }
+    // const getAllStd=async()=>{
+    //     try{
+    //         const response=await axios.get('')
+    //     }
+    // }
     const closeUpdateAdd=()=>{
         setIsUpdateAdd(false);
     }
