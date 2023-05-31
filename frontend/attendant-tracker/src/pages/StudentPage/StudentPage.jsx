@@ -259,3 +259,4 @@ useEffect(()=>{
 }
 
 export default StudentPage
+// just export

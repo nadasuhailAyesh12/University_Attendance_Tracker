@@ -193,3 +193,4 @@ const TableViewerlectures = ({missed,SearchParams,CourseId,dept_name,recordChang
 }
 
 export default TableViewerlectures
+// just export
