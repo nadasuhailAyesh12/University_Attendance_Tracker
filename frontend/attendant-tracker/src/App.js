@@ -12,6 +12,9 @@ import { useNavigate } from 'react-router-dom';
 import LecturePage from './pages/lecturePage/LecturePage';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+export const showingError = (str) => {
+  toast(str);
+}
 function App() {
   const [role,setRole]=useState("");
   return (
@@ -25,7 +28,7 @@ function App() {
             <Route path="/" element={<Login role={role} setRole={setRole}/>} />
             <Route path="/signup" element={<SignUp/>} />
             <Route path="/courses" element={<CoursePage/>} />
-            <Route path="/instructor" element={<InstructorPage/>}/>
+            <Route path="/inst" element={<InstructorPage/>}/>
             <Route path="/lectures" element={<LecturePage/>}/>
             <Route path="/attendStatus" element={<AttendantStatus/>}/>
           </Routes>

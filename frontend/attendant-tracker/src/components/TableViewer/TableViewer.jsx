@@ -4,7 +4,8 @@ import { WrapperViewer, ColumnBar, ColumnTitle, ColumnRecord, UpdateBtn, DelBtn,
 import Popup from '../Popup/Popup';
 import { ToastContainer, toast } from 'react-toastify';
 import { Label } from '../navBar/navBar.styles';
-const TableViewer = ({ mostCommit,WhichSection,SearchParams,TextString,course_id,dept_name,sec_id,Addition}) => {
+import { showingError } from '../../App';
+const TableViewer = ({ mostCommit,WhichSection,TextString,course_id,dept_name,sec_id,Addition,SearchParams,Consecutive}) => {
     const [WhichSectionSt, setWhichSectionSt] = useState(WhichSection);
     const [isOpenEdit, setIsOpenEdit] = useState(false);
     const [isOpenAdd, setIsOpenAdd] = useState(false);
@@ -43,20 +44,33 @@ const TableViewer = ({ mostCommit,WhichSection,SearchParams,TextString,course_id
         const ChoosenId = oldId;
         console.log(ChoosenId);
         console.log("FIRST_NAME:",first_name);
+        try{
         const res = await axios.put(`http://localhost:5000/api/v1/student/${ChoosenId}`, {ID:id, first_name, middle_initial, middle_final, final_name, dept_name, location });
         console.log(oldId);
         console.log(isSelectedToEdit);
         console.log(res.data);
+        }catch(err){
+            showingError(err.response.data.message);
+        }
     }
     console.log(LectureId);
     const onAddAttendance = async () => {
-        const res = await axios.post(`http://localhost:5000/api/v1/student/attend/${IdtoAdd}`, { lecture_id: LectureId });
+        try{
+        const res = await axios.post(`http://localhost:5000/api/v1/student/attend/${course_id}/${sec_id}/${IdtoAdd}`, { lecture_id: LectureId });
         console.log(res);
+        }catch(err){
+            showingError(err.response.data.message);
+        }
     }
     const bringMostCommit=async()=>{
+        console.log(`http://localhost:5000/api/v1/student/attend/${course_id}/${sec_id}`);
+        try{
         const res=await axios.get(`http://localhost:5000/api/v1/student/attend/${course_id}/${sec_id}`);;
         console.log(res.data);
         setData(res.data.commitedStudents);
+        }catch(err){
+            showingError(err.response.data.message);
+        }
     }
     const onFirstLoad=() => {
         const fetchData = async () => {
@@ -66,19 +80,48 @@ const TableViewer = ({ mostCommit,WhichSection,SearchParams,TextString,course_id
                 setData(response.data.students);
                 console.log(sec_id);
             } catch (error) {
-                showingError(error.message);
+                showingError(error.response.data.message);
                 console.log(error);
             }
         };
 
         fetchData(); // Call the fetchData function
     }
+    const onFirstLoading=()=>{
+        const fetchData = async () => {
+            try {
+                const response = await axios.get(`http://localhost:5000/api/v1/student`);
+                console.log("First Load is Here")
+                setData(response.data.students);
+                console.log(sec_id);
+            } catch (error) {
+                showingError(error.response.data.message);
+                console.log(error);
+            }
+        };
+
+        fetchData();
+    }
     const onSearch=async()=>{
         try{
         const response=await axios.get(`http://localhost:5000/api/v1/student/search/${TextString}`);
         setData([response.data.student])
         }catch(error){
-            showingError(error.message);
+            showingError(error.response.data.message);
+            console.log(error);
+        }
+    }
+    // const getAllStd=async()=>{
+    //     try{
+    //         const response=await axios.get('')
+    //     }
+    // }
+    const onGetConsecutive=async()=>{
+        try{
+            const response=await axios.get(`http://localhost:5000/api/v1/student/misthreeconsecutive`);
+            setData(response.data.uncommitedStudents);
+        }catch(error){
+            showingError(error.response.data.message);
             console.log(error);
         }
     }
@@ -86,11 +129,20 @@ const TableViewer = ({ mostCommit,WhichSection,SearchParams,TextString,course_id
         setIsUpdateAdd(false);
     }
     useEffect(()=>{
+        if(Consecutive!==0){
+            onGetConsecutive();
+        }
+    },[Consecutive])
+    useEffect(()=>{
         if(mostCommit!=0){
         bringMostCommit();
         }
     },[mostCommit])
-    useEffect(onFirstLoad, [sec_id,course_id,dept_name]);
+    useEffect(()=>{
+        if(SearchParams!==0){
+            onFirstLoad();
+        }
+    } ,[sec_id,course_id,dept_name]);
     const onDeleteRecord=async(id)=>{
         try{
             console.log(id);
@@ -98,14 +150,17 @@ const TableViewer = ({ mostCommit,WhichSection,SearchParams,TextString,course_id
         console.log(res.data);
         onFirstLoad();
         }catch(error){
-            showingError(error.message);
+            showingError(error.response.data.message);
             console.log(error);
         }
     }
     useEffect(()=>{
         const fetch = async () => {
             console.log(SearchParams);
-            if(TextString===""){
+            if(TextString==="" && SearchParams===0){
+                onFirstLoading();
+            }
+            else if(TextString==="" && SearchParams!==0){
                 onFirstLoad();
             }
             else{
@@ -270,7 +325,7 @@ const TableViewer = ({ mostCommit,WhichSection,SearchParams,TextString,course_id
                         console.log(response);
                         // showingError(response.data.message)
                     }catch(error){
-                        console.log(error);
+                        showingError(error.response.data.message);
                         // showingError(error.data.message)
                     }
                 }}>Update Attendance</UpdateBtn>
@@ -280,3 +335,4 @@ const TableViewer = ({ mostCommit,WhichSection,SearchParams,TextString,course_id
 }
 
 export default TableViewer
+// just export

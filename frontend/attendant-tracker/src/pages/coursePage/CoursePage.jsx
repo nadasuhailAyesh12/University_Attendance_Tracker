@@ -5,6 +5,7 @@ import { Label } from '../../components/navBar/navBar.styles';
 import TableViewerCourse from '../../components/TableViewerCourse/TableViewerCourse';
 import Popup from '../../components/Popup/Popup';
 import axios from 'axios';
+import { showingError } from '../../App';
 const CoursePage = () => {
   const [isOpenToAdd,setIsOpenToAdd]=useState(false);
   const[TextString,setTextString]=useState("");
@@ -32,6 +33,7 @@ const CoursePage = () => {
     }catch(err){
       console.log(err);
       console.log({id,title,dept_name,book});
+      showingError(err.response.data.message);
     }
   }
   return (

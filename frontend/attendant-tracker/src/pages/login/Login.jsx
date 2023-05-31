@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Wrapper, LoginForm, Label, StyInput, InternalWrapper, DontHaveLabel, SignInBtn, SignUpLabel } from './Login.styles';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
+import { showingError } from '../../App';
 const expiresTime = 7;
 const Login = ({role,setRole}) => {
 
@@ -32,7 +33,8 @@ const Login = ({role,setRole}) => {
       .catch((error) => {
         setLogicError(true);
         // Handle any errors
-        console.error(error.message);
+        console.log(error.response.data.message);
+        showingError(error.response.data.message);
       });
   };
 
@@ -59,7 +61,9 @@ const Login = ({role,setRole}) => {
           {LoginError && <Label style={{ color: "#8b0000" }}>Password or Id not correct</Label>}
           <SignInBtn type='submit'>Log in</SignInBtn>
           <DontHaveLabel>Dont have an account?</DontHaveLabel>
-          <SignUpLabel>Sign Up</SignUpLabel>
+          <SignUpLabel onClick={()=>{
+            navigate('/signup');
+          }}>Sign Up</SignUpLabel>
         </InternalWrapper>
       </LoginForm>
     </Wrapper>

@@ -6,14 +6,15 @@ const addSectionandLecture = async (req, res, next) => {
         const course_id = req.params.id;
         const { sec_id, semester, year, room_number, building, start_time, end_time, day, ID } = req.body;
         await sectionRepository.insertSection(sec_id, course_id, semester, year, ID);
-        await lectureRepository.addLecture(sec_id, course_id, semester, year, room_number, building, start_time, end_time, day);
+        await lectureRepository.addLectureForSection(sec_id, course_id, semester, year, room_number, building, start_time, end_time, day);
         res.status(200).json({
             success: true,
             messsage: "add section sucessfuly"
         })
     }
     catch (error) {
-        return next(error)
+        // return next(error)
+        console.log(error);
     }
 }
 

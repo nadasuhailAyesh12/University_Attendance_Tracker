@@ -7,6 +7,7 @@ import { UpdateBtn } from '../../components/TableViewer/TableViewer.styles';
 import {Selector} from '../lecturePage/LecturePage.styles';
 import {Wrapper,InternalWrapper,SearchBar,Input,Button} from '../StudentPage/StudentPage.styles';
 import TableViewerStatus from '../../components/TableViewerStatus/TableViewerStatus';
+import { showingError } from '../../App';
 const AttendantStatus = () => {
     const [course_id,setCourse_id]=useState("ECOM3422");
     const [courses,setCourses]=useState([]);
@@ -24,7 +25,7 @@ const AttendantStatus = () => {
         console.log(response.data);
         
         }catch(error){
-            console.log(error);
+            showingError(error.response.data.message);
         }
         
     }

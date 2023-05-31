@@ -57,8 +57,8 @@ const searchLecture = async (req, res, next) => {
         const sec_id = Arguments[0];
         const building = Arguments[1];
         const room_number = Arguments[2];
-
-        const lecture = await lectureRepository.searchLecture(course_id, dept_name, building, room_number, sec_id)
+        const lecture_id = Arguments[3];
+        const lecture = await lectureRepository.searchLecture(course_id, dept_name, building, room_number, sec_id, lecture_id)
 
         res.status(200).json({
             success: true,
