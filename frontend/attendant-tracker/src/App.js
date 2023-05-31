@@ -12,8 +12,13 @@ import { useNavigate } from 'react-router-dom';
 import LecturePage from './pages/lecturePage/LecturePage';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 export const showingError = (str) => {
   toast(str);
+}
+export function handleDelete(delAction) {
+  window.confirm('Are you sure to delete this');
 }
 function App() {
   const [role,setRole]=useState("");

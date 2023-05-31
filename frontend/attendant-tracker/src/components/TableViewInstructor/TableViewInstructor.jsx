@@ -53,9 +53,11 @@ const TableViewInstructor=({TextString})=>{
     }
     const onDelete=async()=>{
         try{
+            if(window.confirm('Are you sure to delete this')){
             const response=await axios.delete(`http://localhost:5000/api/v1/instructor/${showingID}`);
             console.log(response);
             OnFirstLoad();
+            }
         }catch(error){
             console.log(error);
         }

@@ -89,11 +89,13 @@ const TableViewerlectures = ({missed,SearchParams,CourseId,dept_name,recordChang
     },[recordChanges,CourseId,dept_name]);
     const DeleteRecord=async()=>{
         try{
+            if(window.confirm('Are you sure to delete this')){
             console.log("section id: ",oldSec);
             console.log("url is: ",`http://localhost:5000/api/v1/lecture/${oldID}/${CourseId}/${oldSec}`);
             const response=await axios.delete(`http://localhost:5000/api/v1/lecture/${oldID}/${CourseId}/${oldSec}`,isSelectedToEdit);
             console.log(response);
             onFirstLoad();
+            }
         }catch(error){
             showingError(error.response.data.message);
             console.log(error);
