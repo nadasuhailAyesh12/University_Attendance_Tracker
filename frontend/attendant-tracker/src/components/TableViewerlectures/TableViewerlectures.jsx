@@ -51,6 +51,7 @@ const TableViewerlectures = ({missed,SearchParams,CourseId,dept_name,recordChang
     },[mostAttend])
     const onSearch=async()=>{
         try{
+            console.log(`http://localhost:5000/api/v1/lecture/search/${CourseId}/${dept_name}/${SearchParams}`);
             const response=await axios.get(`http://localhost:5000/api/v1/lecture/search/${CourseId}/${dept_name}/${SearchParams}`);
             setData([response.data.lecture]);
             console.log(response.data);

@@ -29,7 +29,7 @@ const InstructorPage = () => {
       <NavBar/>
       <SearchBar>
       <Label>Search for Instructor</Label>
-      <Input onKeyDown={(e)=>{setTextString(e.target.value)}}
+      <Input onBlur={(e)=>{setTextString(e.target.value)}}
       />
       <Button onClick={()=>{setIsOpenToAdd(true)
       console.log("hello mother fker")}}>Add Instructor</Button>

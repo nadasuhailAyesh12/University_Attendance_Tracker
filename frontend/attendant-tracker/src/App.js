@@ -25,7 +25,7 @@ function App() {
             <Route path="/" element={<Login role={role} setRole={setRole}/>} />
             <Route path="/signup" element={<SignUp/>} />
             <Route path="/courses" element={<CoursePage/>} />
-            <Route path="/instructor" element={<InstructorPage/>}/>
+            <Route path="/inst" element={<InstructorPage/>}/>
             <Route path="/lectures" element={<LecturePage/>}/>
             <Route path="/attendStatus" element={<AttendantStatus/>}/>
           </Routes>
