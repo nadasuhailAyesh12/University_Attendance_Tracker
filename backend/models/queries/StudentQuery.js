@@ -129,6 +129,7 @@ const deleteStudent = async (id) => {
     })
     await db.none(deleteQuery);
 }
+
 const updateStudentReport = async (course_id, sec_id, lecture_id, ID) => {
     const updateStudenReportQuery = new PreparedStatement({
         name: 'updateStudentReport', text: "insert into attendance VALUES($1, $2,$3,$4)"
@@ -137,5 +138,22 @@ const updateStudentReport = async (course_id, sec_id, lecture_id, ID) => {
     return db.any('select * from attendance where ID=$1', [ID])
 }
 
-const studentRepository = { getStudentsWhoAttendLessthan25Percent, registerStudentAttendance, getStudents, updateStudent, search, addStudent, getMostCommitmentStudents, deleteStudent, getStudentbyID, getStudentAttendanceReport, updateStudentReport, getStudentsWhomissed3consecutiveLectures };
+const getStudentbyIDAnDDept = async (id) => {
+    const getStudentbyIDAnDDeptQuery = new PreparedStatement({
+        name: 'getStudentbyIDAnDDeptQuery', text: `select ID,first_name,middle_initial,middle_final,final_name,gender,location ,dept_name from student
+where ID=$1`,
+        values: [id]
+    })
+    const student = await db.one(getStudentbyIDAnDDeptQuery);
+    return student;
+}
+const AddstudentBelongToCourse = async (ID, sec_id, course_id, semester, year) => {
+    const addStudentBelong = new PreparedStatement({
+        name: 'addStudentBelong', text: "insert into takes values($1,$2,$3,$4,$5)"
+    })
+    addStudentBelong.values = [sec_id, course_id, semester, year, ID];
+    await db.none(addStudentBelong);
+}
+
+const studentRepository = { getStudentsWhoAttendLessthan25Percent, registerStudentAttendance, getStudents, updateStudent, search, addStudent, getMostCommitmentStudents, deleteStudent, getStudentbyID, getStudentAttendanceReport, updateStudentReport, getStudentsWhomissed3consecutiveLectures, AddstudentBelongToCourse, getStudentbyIDAnDDept };
 module.exports = studentRepository;

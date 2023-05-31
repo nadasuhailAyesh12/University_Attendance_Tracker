@@ -81,7 +81,7 @@ const getMostCommitedStudents = async (req, res, next) => {
         const students = await studentRepository.getMostCommitmentStudents(course_id, sec_id)
         const commitedStudents = []
         for (let i = 0; i < students.length; i++) {
-            commitedStudents[i] = await studentRepository.getStudentbyID(students[i].id)
+            commitedStudents[i] = await studentRepository.getStudentbyIDAnDDept(students[i].id)
         }
 
         res.status(200).json({
@@ -141,5 +141,20 @@ const getAllStudents = async (req, res, next) => {
     }
 }
 
-const StudentController = { addAttendance, getStudents, updateStudent, search, addStudent, getMostCommitedStudents, deleteStudent, getStudentsWhomiss3ConsecutiveLectures, getAllStudents }
+const insertStudentBelongToCourse = async (req, res, next) => {
+    try {
+        const { id, sec_id, course_id, semester, year } = req.body
+        await studentRepository.AddstudentBelongToCourse(id, sec_id, course_id, semester, year)
+
+        res.status(200).json({
+            success: true,
+            message: 'Studen Belong added successfuly'
+        });
+    }
+    catch (err) {
+        return next(err);
+    }
+}
+
+const StudentController = { addAttendance, getStudents, updateStudent, search, addStudent, getMostCommitedStudents, deleteStudent, getStudentsWhomiss3ConsecutiveLectures, getAllStudents, insertStudentBelongToCourse }
 module.exports = StudentController;
