@@ -72,6 +72,7 @@ color:#ffff00;
 font-weight: bold;
 font-size: 24px;
 margin:10px auto;
+cursor:pointer;
 `;
 
 

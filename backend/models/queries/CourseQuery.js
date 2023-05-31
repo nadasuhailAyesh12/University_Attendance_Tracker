@@ -14,7 +14,7 @@ const getCourses = async () => {
 
 const updateCourse = async (oldID, title, dept_name, book, course_id) => {
     const updateQuery = new PreparedStatement({
-        name: 'course', text: "update course set course_id=$5,title=$2,dept_name=$3,book=$4 where course_id =$1"
+        name: 'courseupdate', text: "update course set course_id=$5,title=$2,dept_name=$3,book=$4 where course_id =$1"
     })
     updateQuery.values = [oldID, title, dept_name, book, course_id];
     await db.none(updateQuery);
@@ -22,7 +22,7 @@ const updateCourse = async (oldID, title, dept_name, book, course_id) => {
 
 const deleteCourse = async (id) => {
     const deleteQuery = new PreparedStatement({
-        name: 'course', text: "delete from course where course_id =$1"
+        name: 'coursedelete', text: "delete from course where course_id =$1"
     })
     deleteQuery.values = [id];
     await db.none(deleteQuery);
@@ -30,7 +30,7 @@ const deleteCourse = async (id) => {
 
 const searchCourse = async (title) => {
     const searchQuery = new PreparedStatement({
-        name: 'course', text: 'SELECT * FROM course WHERE title ILIKE $1'
+        name: 'courseSearch', text: 'SELECT * FROM course WHERE title ILIKE $1'
     })
     searchQuery.values = [`%${title}%`]
     const courses = await db.any(searchQuery);
