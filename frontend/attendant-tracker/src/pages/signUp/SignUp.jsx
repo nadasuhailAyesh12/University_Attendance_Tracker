@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Wrapper, LoginForm, Label, StyInput, InternalWrapper, DontHaveLabel, SignInBtn, SignUpLabel } from '../login/Login.styles';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import { showingError } from '../../App';
 const SignupForm = styled(LoginForm)`
   width:520px;
   height:620px;
@@ -19,7 +20,8 @@ const SignUp = () => {
         console.log("i am here");
         navigate("/student");
       }).catch((err) => {
-        console.error(err);
+        console.log(err);
+        showingError(err.response.data.message);
       })
   }
   const handleFormSubmit = (e) => {

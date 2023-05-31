@@ -12,6 +12,9 @@ import { useNavigate } from 'react-router-dom';
 import LecturePage from './pages/lecturePage/LecturePage';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+export const showingError = (str) => {
+  toast(str);
+}
 function App() {
   const [role,setRole]=useState("");
   return (

@@ -3,6 +3,7 @@ import axios from 'axios';
 import { WrapperViewer, ColumnBar, ColumnTitle, ColumnRecord, UpdateBtn, DelBtn, AddAttendance, Input } from '../TableViewer/TableViewer.styles';
 import Popup from '../Popup/Popup';
 import { ToastContainer, toast } from 'react-toastify';
+import { showingError } from '../../App';
 const TableViewerStatus=({course_id,sec_id,recordChanges})=>{
     const arr=["lecture_id","no of attending students","attendance percentage"];
     const [data,setData]=useState([]);
@@ -15,6 +16,7 @@ const TableViewerStatus=({course_id,sec_id,recordChanges})=>{
         setData(response.data.data);
 
         }catch(error){
+            showingError(error.response.data.message);
             toast(error.message);
         }
     }
