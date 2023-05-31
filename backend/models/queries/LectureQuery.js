@@ -51,6 +51,23 @@ where course_id =$1 and sec_id =$2
     const lectures = await db.any(getLecturesThatHaveMoreAbscent)
     return lectures;
 }
+const getLecturesThatTheStudentattendmorethan8o0percentmiss = async (course_id, sec_id) => {
+    const getLectureQuery = new PreparedStatement({
+        name: 'getLecturesThatTheStudentattendmorethan8o0percentmissQuery',
+        text: ` select lecture_id,id from lecture cross join student where lecture_id not in (select lecture_id from attendance where id in (SELECT student.ID from student natural join takes
+ where ID  not in(select attendance.ID FROM attendance 
+    WHERE course_id =$1 and sec_id=$2
+    GROUP BY attendance.ID
+HAVING(COUNT(*) * 100.0) / (SELECT COUNT(*) FROM lecture WHERE course_id = $1 and sec_id =$2) < 80))) and id in (SELECT student.ID from student natural join takes
+ where ID  not in (select attendance.ID FROM attendance 
+    WHERE course_id = $1 and sec_id = $2
+    GROUP BY attendance.ID
+    HAVING(COUNT(*) * 100.0) / (SELECT COUNT(*) FROM lecture WHERE course_id =$1 and sec_id =$2) < 80))`,
+        values: [course_id, sec_id]
+    })
+    const lectures = await db.any(getLectureQuery)
+    return lectures;
+}
 
 const addLecture = async (lecture_id, sec_id, course_id, semester, year, room_number, building, start_time, end_time, day) => {
     const insertQuery = new PreparedStatement({
@@ -117,5 +134,6 @@ const getSpecificLecture = async (course_id, sec_id, lecture_id) => {
     return lecture;
 }
 
-const lectureRepository = { addLecture, getLectures, searchLecture, updateLecture, deleteLecture, getNumberOfAttendance, getAttendanceRatio, getLecturesThatHaveAbscentRatioMoreThanAttendanceRatio, getSpecificLecture, getMostattendedLectures, addLectureForSection };
+
+const lectureRepository = { addLecture, getLectures, searchLecture, updateLecture, deleteLecture, getNumberOfAttendance, getAttendanceRatio, getLecturesThatHaveAbscentRatioMoreThanAttendanceRatio, getSpecificLecture, getMostattendedLectures, addLectureForSection,  getLecturesThatTheStudentattendmorethan8o0percentmiss};
 module.exports = lectureRepository;

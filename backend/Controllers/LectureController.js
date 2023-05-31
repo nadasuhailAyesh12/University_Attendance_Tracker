@@ -18,6 +18,21 @@ const AttendanceStatus = async (req, res, next) => {
     }
 }
 
+const getLectureThattheStudentattendmorethan80missed = async (req, res, next) => {
+    try {
+        const { course_id, sec_id } = req.params;
+        const lectures = await lectureRepository.getLecturesThatTheStudentattendmorethan8o0percentmiss(course_id, sec_id)
+        res.status(200).json({
+            success: true,
+            lectures
+        });
+    }
+    catch (err) {
+        console.log(err)
+        return next(err);
+    }
+}
+
 const getLectureThatHavemoremissedthanattended = async (req, res, next) => {
     try {
         const { course_id, sec_id } = req.params;
@@ -135,5 +150,5 @@ const getMostAttendedLectures = async (req, res, next) => {
     }
 }
 
-const lectureController = { searchLecture, getLectures, updateLecture, deleteLecture, insertLecture, AttendanceStatus, getLectureThatHavemoremissedthanattended, getMostAttendedLectures }
+const lectureController = { searchLecture, getLectures, updateLecture, deleteLecture, insertLecture, AttendanceStatus, getLectureThatHavemoremissedthanattended, getMostAttendedLectures, getLectureThattheStudentattendmorethan80missed }
 module.exports = lectureController;
