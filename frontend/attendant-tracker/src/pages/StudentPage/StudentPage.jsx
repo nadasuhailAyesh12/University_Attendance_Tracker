@@ -53,7 +53,7 @@ const StudentPage = ({ role, setRole }) => {
     setIsFOpen(false);
   }
   const closeOpenS=()=>{
-    setOpenSLect(true);
+    setOpenSLect(false);
   }
   const handleUpload = () => {
     if (selectedFile) {
@@ -124,6 +124,14 @@ const StudentPage = ({ role, setRole }) => {
       showingError(error.response.data.message);
     }
   }
+  const onGetMoreEighty=async()=>{
+    try{
+       const response=await axios.get(`http://localhost:5000/api/v1/lecture/studentAttend80/${course_id}/${sec_id}`);
+       setLectMiss(response.data.lectures)
+    }catch(error){
+        console.log(error);
+    }
+}
   useEffect(() => {
     getAllDepartments();
     getAllCourses();
@@ -175,6 +183,7 @@ const StudentPage = ({ role, setRole }) => {
             setConsecutive(prev=> prev+1);
           }}>get Student Who miss more than 3 consecutive lectures</Button>
           <Button style={{width:'450px'}} onClick={()=>{
+            onGetMoreEighty();
             setOpenSLect(true);
           }}>Get missing lectures for student attend most of lectures</Button>
         </SearchBar>
@@ -274,6 +283,12 @@ const StudentPage = ({ role, setRole }) => {
           <ColumnTitle>Std ID</ColumnTitle>
           <ColumnTitle>lecture ID</ColumnTitle>
         </ColumnBar>
+          {lectMis.map((el,index)=>(
+        <ColumnRecord>
+            <ColumnTitle key={index}>{el.id}</ColumnTitle>
+            <ColumnTitle key={index}>{el.lecture_id}</ColumnTitle>
+        </ColumnRecord>
+          ))}
       </Popup>
     </Wrapper>
   )

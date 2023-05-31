@@ -95,9 +95,11 @@ const onShowSection=async()=>{
 }
 const onDeleteCourse=async()=>{
     try{
+        if(window.confirm('Are you sure to delete this')){
         const response=await axios.delete(`http://localhost:5000/api/v1/course/${IDShowing}`);
         console.log(IDShowing," ",response.data);
         onFirstLoad();
+        }
     }catch(err){
         showingError(err.response.data.message);
         console.log(err);

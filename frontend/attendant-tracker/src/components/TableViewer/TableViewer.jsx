@@ -5,6 +5,7 @@ import Popup from '../Popup/Popup';
 import { ToastContainer, toast } from 'react-toastify';
 import { Label } from '../navBar/navBar.styles';
 import { showingError } from '../../App';
+import { handleDelete } from '../../App';
 const TableViewer = ({ mostCommit,WhichSection,TextString,course_id,dept_name,sec_id,Addition,SearchParams,Consecutive}) => {
     const [WhichSectionSt, setWhichSectionSt] = useState(WhichSection);
     const [isOpenEdit, setIsOpenEdit] = useState(false);
@@ -145,10 +146,17 @@ const TableViewer = ({ mostCommit,WhichSection,TextString,course_id,dept_name,se
     } ,[sec_id,course_id,dept_name]);
     const onDeleteRecord=async(id)=>{
         try{
+            if(window.confirm('Are you sure to delete this')){
             console.log(id);
         const res=await axios.delete(`http://localhost:5000/api/v1/student/${id}`);
         console.log(res.data);
+        if(SearchParams===0){
+            onFirstLoading();
+        }else{
         onFirstLoad();
+        }
+        console.log(data);
+        }
         }catch(error){
             showingError(error.response.data.message);
             console.log(error);
