@@ -11,6 +11,7 @@ const TableViewerCourse=({recordChanges,TextString})=>{
     const [isAddedRecord,setIsAddRecord]=useState(recordChanges);
     const [isOpenShowing,setIsOpenShowing]=useState(false);
     const [IDShowing,setIDShowing]=useState("");
+    const [IDShowSection,setIDShowSection]=useState("");
     const [sectionRelated,setSectionRelated]=useState([]);
     const [isOpenAddSec,setIsOpenAddSec]=useState(false);
     const [AddedSection,setAddedSection]=useState({sec_id:"",semester:"",year:"",room_number:"",building:"",start_time:"",end_time:"",day:"",ID:""});
@@ -27,6 +28,11 @@ const TableViewerCourse=({recordChanges,TextString})=>{
         }
 
     }
+    useEffect(()=>{
+        if(IDShowSection!==""){
+            onShowSection();
+        }
+    },[IDShowSection])
     const closePopup = () => {
         if(isOpenEdit){
        setIsOpenEdit(false);
@@ -38,6 +44,7 @@ const TableViewerCourse=({recordChanges,TextString})=>{
     setData(response.data.course);
    }
    const closeShowing=()=>{
+    setSectionRelated([]);
     setIsOpenShowing(false);
    }
    const openPopup = () => {
@@ -46,6 +53,10 @@ const TableViewerCourse=({recordChanges,TextString})=>{
 const closeAddSectionPop=()=>{
     setIsOpenAddSec(false);
 }
+function wait(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+  
 const onUpdateCourse=async()=>{
     try{
         console.log(isSelectedToEdit);
@@ -70,8 +81,8 @@ const onAddSection=async()=>{
 }
 const onShowSection=async()=>{
     try{
-        console.log(IDShowing);
-        const response = await axios.get(`http://localhost:5000/api/v1/section/${IDShowing}`);
+        console.log(IDShowSection);
+        const response = await axios.get(`http://localhost:5000/api/v1/section/${IDShowSection}`);
         setSectionRelated(response.data.sections);
     }catch(err){
         console.log(err);
@@ -117,10 +128,14 @@ const onDeleteCourse=async()=>{
                         onDeleteCourse();
                     }}>Delete</DelBtn>
                     <UpdateBtn onClick={()=>{
-                        setIDShowing(el.course_id);
-                        onShowSection();
-                        setIsOpenShowing(true);
-                        console.log("open showing...",IDShowing);
+                       setIDShowSection(el.course_id);
+                       setIsOpenShowing(true);
+                        // console.log("click: ",IDShowSection);
+                        // wait(2000);
+                        // onShowSection();
+                        // console.log(IDShowSection,"id after");
+                        // setIsOpenShowing(true);
+                        // console.log("open showing...",IDShowSection);
                         
                     }}>Show Section</UpdateBtn>
                     <UpdateBtn onClick={()=>{
