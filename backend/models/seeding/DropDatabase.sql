@@ -1,1 +1,1 @@
-drop database if exists sswew;
+drop database if exists  nadamohattendance;

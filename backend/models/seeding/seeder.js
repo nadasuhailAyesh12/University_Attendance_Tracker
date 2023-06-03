@@ -14,7 +14,7 @@ const dropDatabase = async () => {
 const createDatabase = async () => {
     const fullPath = join(__dirname, "createDatabase.sql");
     await db.any(new QueryFile(fullPath, { minify: true }));
-    console.log("tables created successfully")
+    console.log("database created successfully")
     db.$pool.end
 };
 

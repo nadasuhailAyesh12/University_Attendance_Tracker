@@ -1,5 +1,5 @@
 const dotenv = require("dotenv")
-dotenv.config({ path: "backend/.env" })
+dotenv.config()
 
 const { DEVELOPMENT_URI, SEEDER_URI, PORT, NODE_ENV, JSONWEBTOKEN_SECRET_KEY, COOKIE_EXPIRES_TIME } = process.env
 
