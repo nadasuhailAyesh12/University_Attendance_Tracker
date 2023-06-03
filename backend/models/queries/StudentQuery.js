@@ -43,13 +43,8 @@ WHERE EXISTS (
 
 const search = async (argument) => {
     if (isNaN(argument)) {
-        const nameArguments = argument.split(' ');
-        const first_name = nameArguments[0];
-        const middle_initial = nameArguments[1];
-        const middle_final = nameArguments[2];
-        const final_name = nameArguments[3];
-        const searchQuery = new PreparedStatement({ name: 'getStudentByID', text: "select * from student where first_name ilike $1 or middle_initial ilike $2 and middle_final ilike $3 and final_name ilike $4" });
-        const user = await db.one(searchQuery, [`%${first_name}%`, `%${middle_initial}%`, `%${middle_final}%`, `%${final_name}%`]);
+        const searchQuery = new PreparedStatement({ name: 'getStudentByID', text: "select * from student where CONCAT(first_name, ' ', middle_initial,' ',middle_final,' ',final_name) iLIKE $1 limit 10 ;" });
+        const user = await db.any(searchQuery, [`%${argument}%`]);
         return user;
     }
     else {
@@ -58,9 +53,10 @@ const search = async (argument) => {
          from student left outer join student_phone 
         on student.ID=student_phone.ID
         WHERE student.ID=$1
-    OR phone_number=$1`
+    OR phone_number=$1
+    limit 3`
         });
-        const user = await db.one(searchQuery, [argument]);
+        const user = await db.any(searchQuery, [argument]);
         return user;
     }
 }

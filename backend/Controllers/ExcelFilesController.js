@@ -50,14 +50,16 @@ const exportStudentsWhoAttendLessthan25Percent = async (req, res) => {
     const worksheet = workbook.addWorksheet('Sheet 1');
     // Add column headers to the worksheet
     studentRepository.getStudentsWhoAttendLessthan25Percent(course_id, sec_id).then((data) => {
-        console.log(data);
-        const headers = Object.keys(data[0]);
+
+        const headers = Object.keys(data[0] || { id: 'id' })
         worksheet.addRow(headers);
-        // Add data rows to the worksheet
-        data.forEach(row => {
-            const values = Object.values(row);
-            worksheet.addRow(values);
-        });
+        if (data.length !== 0) {
+            // Add data rows to the worksheet
+            data.forEach(row => {
+                const values = Object.values(row);
+                worksheet.addRow(values);
+            });
+        }
 
         // Set the content type and headers for the download
         res.setHeader(
