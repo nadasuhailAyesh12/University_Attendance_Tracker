@@ -14,13 +14,14 @@ const InstructorPage = () => {
     const [name,setName]=useState("");
     const [dept_name,setDept_name]=useState("");
     const [role,setRole]=useState("");
+    const [recordChanges,setRecordChanges]=useState(0);
     const closeAddPopup = () =>{
         setIsOpenToAdd(false);
     }
     const onAddInst=async()=>{
       try{
         const response=await axios.post("http://localhost:5000/api/v1/instructor",{id:ID,name,dept_name,role});
-        console.log(response);
+        setRecordChanges(prev=> prev+1);
       }catch(err){
         showingError(err.response.data.message);
       }
@@ -32,10 +33,9 @@ const InstructorPage = () => {
       <Label>Search for Instructor</Label>
       <Input onBlur={(e)=>{setTextString(e.target.value)}}
       />
-      <Button onClick={()=>{setIsOpenToAdd(true)
-      console.log("hello mother fker")}}>Add Instructor</Button>
+      <Button onClick={()=>{setIsOpenToAdd(true)}}>Add Instructor</Button>
       </SearchBar>
-      <TableViewInstructor TextString={TextString}/>
+      <TableViewInstructor TextString={TextString} recordChanges={recordChanges}/>
       <Popup isOpen={isOpenToAdd} onClose={closeAddPopup}>
         <h2>Instructor ID</h2>
         <Input onChange={(e)=>setID(e.target.value)}/>
@@ -46,8 +46,8 @@ const InstructorPage = () => {
         <h2>Role</h2>
         <Input onChange={(e)=>setRole(e.target.value)}/>
         <UpdateBtn onClick={()=>{
+          setRecordChanges();
           onAddInst();
-          console.log("added");
         }}>Add Instrcutor</UpdateBtn>
       </Popup>
     </Wrapper>

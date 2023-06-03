@@ -13,14 +13,10 @@ const SignUp = () => {
   const { register, handleSubmit, formState: { errors }, } = useForm();
   const navigate=useNavigate();
   const onSubmit = (data) => {
-    console.log(data, "this is data");
     axios.post("http://localhost:5000/api/v1/auth/signup", data)
       .then((res) => {
-        console.log(res);
-        console.log("i am here");
         navigate("/student");
       }).catch((err) => {
-        console.log(err);
         showingError(err.response.data.message);
       })
   }

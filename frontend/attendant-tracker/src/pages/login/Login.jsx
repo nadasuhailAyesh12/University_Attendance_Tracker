@@ -17,11 +17,9 @@ const Login = ({role,setRole}) => {
     const formData = { ID, password };
 
     // Send the form data to the backend using Axio
-    console.log("ID:", ID, "password", password);
     axios.post('http://localhost:5000/api/v1/auth/login', { ID, password })
       .then(function (response) {
         // Handle the response from the backend
-        console.log(response.data);
         Cookies.set('token', response.data.token);
 
         setRole(response.data.user.role);
@@ -33,7 +31,6 @@ const Login = ({role,setRole}) => {
       .catch((error) => {
         setLogicError(true);
         // Handle any errors
-        console.log(error.response.data.message);
         showingError(error.response.data.message);
       });
   };

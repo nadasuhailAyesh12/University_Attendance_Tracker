@@ -35,10 +35,8 @@ const LecturePage = () => {
         try{
         const response=await axios.get("http://localhost:5000/api/v1/course");
         setCourses(response.data.courses);
-        console.log(response.data);
         
         }catch(error){
-            console.log(error);
         }
         
     }
@@ -46,10 +44,8 @@ const LecturePage = () => {
         try{
         const response=await axios.get("http://localhost:5000/api/v1/department");
         setDepartments(response.data.departments);
-        console.log(response.data);
         
         }catch(error){
-            console.log(error);
         }
         
     }
@@ -57,21 +53,19 @@ const LecturePage = () => {
         setMissingPop(false);
     }
     const AddLectures=async()=>{
-        console.log("added");
         try{
             
             if(isNaN(ObjToAdd.year)){
                 setIsYearMistake(true);
             }
             else{
-             const{lecture_id, year,sec_id,room_number,building,day,start_time,end_time,semester} =ObjToAdd;
-            const response=await axios.post("http://localhost:5000/api/v1/lecture",{course_id:course_id,lecture_id,year,sec_id,building,day,start_time,end_time,semester,room_number});
+                const{lecture_id, year,sec_id,room_number,building,day,start_time,end_time,semester} =ObjToAdd;
+                console.log({course_id:course_id,lecture_id,year,sec_id,building,day,start_time,end_time,semester,room_number})
+            const response=await axios.post("http://localhost:5000/api/v1/lecture",{course_id:course_id,lecture_id:lecture_id,year:year,sec_id:sec_id,building:building,day:day,start_time:start_time,end_time:end_time,semester:semester,room_number:room_number});
             setDummyState((prev)=>prev+1)
-            console.log(response);
             }
         }catch(error){
             setDummyState((prev)=>prev+1)
-            console.log(error);
         }
     }
     useEffect(()=>{
@@ -84,14 +78,16 @@ const LecturePage = () => {
         <NavBar/>
         <InternalWrapper>
             <SearchBar>
-            <Label>Search For Lectures</Label>
-            <Input onBlur={(e)=>{setSearchParams(e.target.value)}}/>
+            <Label style={{fontSize:'16px'}}>Search For Lectures  when search enter sec_id building room_number lecture_id sperately by space</Label>
+            <Input onBlur={(e)=>{setSearchParams(e.target.value)}}  styles={{width:'800px'}}/>
             <Button onClick={()=>{
                 setDummyState((prev)=>prev+1)
             }}>Search for lectures</Button>
             <Button onClick={()=>{
                 setIsSelectedAdd(true);
             }}>Add Lectures</Button>
+            </SearchBar>
+            <SearchBar>
             <Label>Select course_id</Label>
             <Selector onChange={(e)=>{
                 setCourse_id(e.target.value);
@@ -109,8 +105,6 @@ const LecturePage = () => {
                     <option key={index}>{el.dept_name}</option>
                 ))}
             </Selector>
-            </SearchBar>
-            <SearchBar>
             <Button style={{width:'250px'}} onClick={()=>{
                 setIsOpenMost(true);
             }}>Get most attended lectures</Button>
@@ -210,7 +204,6 @@ const LecturePage = () => {
             }}/>
             { isYearMistake && <Label style={{color:'red'}}>Year should be a number</Label> }
             <UpdateBtn onClick={()=>{
-                console.log("fuck");
                 AddLectures();
             }}>Add Lectures</UpdateBtn>
         </Popup>

@@ -4,12 +4,13 @@ import { WrapperViewer, ColumnBar, ColumnTitle, ColumnRecord, UpdateBtn, DelBtn,
 import Popup from '../Popup/Popup';
 import { Label } from '../../components/navBar/navBar.styles';
 
-const TableViewInstructor=({TextString})=>{
+const TableViewInstructor=({TextString,recordChanges})=>{
     const arr=["id","name","dept_name","role"];
     const [Data,setData]=useState([]);
     const [isSelectedToEdit,setIsSelectedToEdit]=useState({id:"",name:"",dept_name:"",role:""});
     const [isOpenEdit,setIsOpenEdit]=useState(false);
     const [showingID,setShowingID]=useState("");
+    const [onShowingDel,setOnShowingDel]=useState("");
     const OnFirstLoad=async()=>{
         try{
         const response=await axios.get("http://localhost:5000/api/v1/instructor");
@@ -20,7 +21,7 @@ const TableViewInstructor=({TextString})=>{
     }
     useEffect(()=>{
         OnFirstLoad();
-    },[]);
+    },[recordChanges]);
     useEffect(()=>{
         if(TextString===""){
             OnFirstLoad();
@@ -28,7 +29,7 @@ const TableViewInstructor=({TextString})=>{
         else{
             onSearch();
         }
-    },[TextString])
+    },[TextString]);
     const onSearch=async()=>{
         try{
         const response=await axios.get(`http://localhost:5000/api/v1/instructor/${TextString}`);
@@ -43,23 +44,19 @@ const TableViewInstructor=({TextString})=>{
     const onUpdate=async()=>{
         try{
             const {dept_name,role,name}=isSelectedToEdit;
-            console.log(dept_name);
             const response=await axios.put(`http://localhost:5000/api/v1/instructor/${showingID}`,{ID:"320200629",name,dept_name,role});
-            console.log(response.data);
             OnFirstLoad();
         }catch(error){
-            console.log(error);
         }
     }
-    const onDelete=async()=>{
+    const onDelete=async(el)=>{
         try{
             if(window.confirm('Are you sure to delete this')){
-            const response=await axios.delete(`http://localhost:5000/api/v1/instructor/${showingID}`);
-            console.log(response);
+            const response=await axios.delete(`http://localhost:5000/api/v1/instructor/${el}`);
             OnFirstLoad();
             }
         }catch(error){
-            console.log(error);
+            OnFirstLoad();
         }
     }
     return (
@@ -80,8 +77,8 @@ const TableViewInstructor=({TextString})=>{
             setIsOpenEdit(true);
         }}>Edit</UpdateBtn>
         <DelBtn onClick={()=>{
-            setShowingID(element.id);
-            onDelete()}}>Delete</DelBtn>
+
+            onDelete(element.id)}}>Delete</DelBtn>
         </ColumnRecord>
         ))}
         <Popup isOpen={isOpenEdit} onClose={closeEditPopUp}>

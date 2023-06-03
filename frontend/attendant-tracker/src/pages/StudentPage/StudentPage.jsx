@@ -64,11 +64,9 @@ const StudentPage = ({ role, setRole }) => {
         .then((response) => {
           // Handle the response from the backend
           // showingError(response.data.message);
-          console.log(response.data.message);
         })
         .catch((error) => {
           // Handle any errors
-          console.log(error);
           showingError(error.response.data.message);
         });
     }
@@ -77,7 +75,6 @@ const StudentPage = ({ role, setRole }) => {
     try {
       const response = await axios.get("http://localhost:5000/api/v1/course");
       setCourses(response.data.courses);
-      console.log(response.data);
 
     } catch (error) {
       showingError(error.response.data.message);
@@ -88,17 +85,14 @@ const StudentPage = ({ role, setRole }) => {
     try {
       const response = await axios.get("http://localhost:5000/api/v1/department");
       setDepartments(response.data.departments);
-      console.log(response.data);
 
     } catch (error) {
       showingError(error.response.data.message);
-      console.log(error);
     }
 
   }
   const exportStd = async () => {
     try {
-      console.log(`http://localhost:5000/api/v1/file/dropped/${course_id}/${sec_id}`);
       const response = await axios.get(`http://localhost:5000/api/v1/file/dropped/${course_id}/${sec_id}`, { responseType: 'blob' });
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement('a');
@@ -106,21 +100,16 @@ const StudentPage = ({ role, setRole }) => {
       link.setAttribute('download', 'file.xls');
       document.body.appendChild(link);
       link.click();
-      console.log(response);
     } catch (error) {
       showingError(error.response.data.message);
-      console.log(error);
     }
   }
   const addStd = async () => {
     try {
-      console.log(isSelectedToAdd);
       const response = await axios.post(`http://localhost:5000/api/v1/student`, isSelectedToAdd);
-      console.log(response.data);
       setAddition(prev => prev + 1);
       showingError(response.data.message);
     } catch (error) {
-      console.log(error);
       showingError(error.response.data.message);
     }
   }
@@ -129,7 +118,6 @@ const StudentPage = ({ role, setRole }) => {
        const response=await axios.get(`http://localhost:5000/api/v1/lecture/studentAttend80/${course_id}/${sec_id}`);
        setLectMiss(response.data.lectures)
     }catch(error){
-        console.log(error);
     }
 }
   useEffect(() => {
@@ -202,9 +190,7 @@ const StudentPage = ({ role, setRole }) => {
         <Label>Sec ID</Label>
         <Input />
         <UpdateBtn onClick={() => {
-          console.log("i am clicked");
           setSec_id(sec_id);
-          console.log(sec_id);
         }}>Load</UpdateBtn>
       </Popup>
       {/* // ID, first_name, middle_initial, middle_final, final_name, dept_name, location */}

@@ -21,8 +21,6 @@ const AttendantStatus = () => {
         try{
         const response=await axios.get("http://localhost:5000/api/v1/course");
         setCourses(response.data.courses);
-        console.log("first Pop",firstPop);
-        console.log(response.data);
         
         }catch(error){
             showingError(error.response.data.message);

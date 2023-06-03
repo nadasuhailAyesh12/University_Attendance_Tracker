@@ -8,8 +8,6 @@ const TableViewerStatus=({course_id,sec_id,recordChanges})=>{
     const arr=["lecture_id","no of attending students","attendance percentage"];
     const [data,setData]=useState([]);
     const LoadLectures=async()=>{
-        console.log(recordChanges);
-        console.log(`http://localhost:5000/api/v1/lecture/attendanceStatus/${course_id}/${sec_id}`,"what is this route")
         if(recordChanges!==0){
         try{
         const response=await axios.get(`http://localhost:5000/api/v1/lecture/attendanceStatus/${course_id}/${sec_id}`);

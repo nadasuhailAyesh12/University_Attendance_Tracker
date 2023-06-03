@@ -12,14 +12,10 @@ const TableViewerlectures = ({missed,SearchParams,CourseId,dept_name,recordChang
     const [oldSec,setOldSec]=useState(0);
     const onFirstLoad=async()=>{
         try{
-        console.log(dept_name," ",CourseId);
-        console.log(`http://localhost:5000/api/v1/lecture/${dept_name}/${CourseId}`);
         const response=await axios.get(`http://localhost:5000/api/v1/lecture/${dept_name}/${CourseId}`);
         setData(response.data.lectures);
-        console.log(response.data);
         }catch(error){
             showingError(error.response.data.message);
-            console.log(error);
         }
     }
     const bringMissing=async()=>{
@@ -28,19 +24,15 @@ const TableViewerlectures = ({missed,SearchParams,CourseId,dept_name,recordChang
         setData(response.data.data);
         }catch(error){
             showingError(error.response.data.message);
-            console.log(error);
         }
     }
     const getMostAttendedLectures =async()=>{
         try{
-            console.log(`http://localhost:5000/api/v1/lecture/attended/${CourseId}/${sec_id}`);
             const response=await axios.get(`http://localhost:5000/api/v1/lecture/attended/${CourseId}/${sec_id}`);
-            console.log(response);
             setData(response.data.commitedLectures)
         
         }catch(error){
             showingError(error.response.data.message);
-            console.log(error);
         }
     }
     useEffect(()=>{
@@ -55,26 +47,19 @@ const TableViewerlectures = ({missed,SearchParams,CourseId,dept_name,recordChang
     },[mostAttend])
     const onSearch=async()=>{
         try{
-            console.log(`http://localhost:5000/api/v1/lecture/search/${CourseId}/${dept_name}/${SearchParams}`);
             const response=await axios.get(`http://localhost:5000/api/v1/lecture/search/${CourseId}/${dept_name}/${SearchParams}`);
             setData([response.data.lecture]);
-            console.log(response.data);
         }catch(error){
             showingError(error.response.data.message);
-            console.log(error);
         }
     }
     const UpdateRecord=async()=>{
         try{
-            console.log('Course ID: ',CourseId);
             const {lecture_id,sec_id,room_number,building,day,start_time,end_time} =isSelectedToEdit;
             const response=await axios.put(`http://localhost:5000/api/v1/lecture/${oldID}/${CourseId}/${oldSec}`,{lecture_id,sec_id,room_number,building,day,start_time,end_time,course_id:CourseId});
-            console.log("old id: ",oldID);
-            console.log(response.data);
             onFirstLoad();
         }catch(error){
             showingError(error.response.data.message);
-            console.log(error);
         }
     }
     const closePop=()=>{
@@ -90,15 +75,12 @@ const TableViewerlectures = ({missed,SearchParams,CourseId,dept_name,recordChang
     const DeleteRecord=async()=>{
         try{
             if(window.confirm('Are you sure to delete this')){
-            console.log("section id: ",oldSec);
-            console.log("url is: ",`http://localhost:5000/api/v1/lecture/${oldID}/${CourseId}/${oldSec}`);
             const response=await axios.delete(`http://localhost:5000/api/v1/lecture/${oldID}/${CourseId}/${oldSec}`,isSelectedToEdit);
-            console.log(response);
+            showingError("deleted successfully")
             onFirstLoad();
             }
         }catch(error){
             showingError(error.response.data.message);
-            console.log(error);
             // onFirstLoad();
         }
     }
@@ -119,12 +101,10 @@ const TableViewerlectures = ({missed,SearchParams,CourseId,dept_name,recordChang
                 <ColumnTitle key={index}>{el.start_time}</ColumnTitle>
                 <ColumnTitle key={index}>{el.end_time}</ColumnTitle>
                 <UpdateBtn onClick={()=>{
-                    console.log(el);
                     setIsSelectedToEdit(el);
                     setOldID(el.lecture_id);
                     setOldSec(el.sec_id);
                     setIsOpenEdit(true);
-                    console.log(isSelectedToEdit);
                 }}>Edit</UpdateBtn>
                 <DelBtn onClick={()=>{
                     setIsSelectedToEdit(el);
@@ -141,7 +121,6 @@ const TableViewerlectures = ({missed,SearchParams,CourseId,dept_name,recordChang
                     setIsSelectedToEdit((prev) => {
                         const p = prev;
                         p.lecture_id = e.target.value;
-                        console.log(p);
                         return p;
                     });
                 }}
@@ -152,7 +131,6 @@ const TableViewerlectures = ({missed,SearchParams,CourseId,dept_name,recordChang
                     setIsSelectedToEdit((prev) => {
                         const p = prev;
                         p.sec_id = e.target.value;
-                        console.log(p);
                         return p;
                     });
                 }}
@@ -163,7 +141,6 @@ const TableViewerlectures = ({missed,SearchParams,CourseId,dept_name,recordChang
                     setIsSelectedToEdit((prev) => {
                         const p = prev;
                         p.room_number= e.target.value;
-                        console.log(p);
                         return p;
                     });
                 }}
@@ -174,7 +151,6 @@ const TableViewerlectures = ({missed,SearchParams,CourseId,dept_name,recordChang
                     setIsSelectedToEdit((prev) => {
                         const p = prev;
                         p.building = e.target.value;
-                        console.log(p);
                         return p;
                     });
                 }}
@@ -185,7 +161,6 @@ const TableViewerlectures = ({missed,SearchParams,CourseId,dept_name,recordChang
                     setIsSelectedToEdit((prev) => {
                         const p = prev;
                         p.day= e.target.value;
-                        console.log(p);
                         return p;
                     });
                 }}
@@ -196,7 +171,6 @@ const TableViewerlectures = ({missed,SearchParams,CourseId,dept_name,recordChang
                     setIsSelectedToEdit((prev) => {
                         const p = prev;
                         p.start_time= e.target.value;
-                        console.log(p);
                         return p;
                     });
                 }}
@@ -206,7 +180,6 @@ const TableViewerlectures = ({missed,SearchParams,CourseId,dept_name,recordChang
                     setIsSelectedToEdit((prev) => {
                         const p = prev;
                         p.end_time= e.target.value;
-                        console.log(p);
                         return p;
                     });
                 }}

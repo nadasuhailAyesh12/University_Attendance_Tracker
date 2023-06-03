@@ -29,6 +29,9 @@ border-radius: 10px;
 outline: none;
 border:1px solid black;
 font-size: 24px;
+::placeholder{
+    font-size:12px;
+}
 `;
 export const Button=styled.div`
 width:150px;

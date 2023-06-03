@@ -20,10 +20,8 @@ const TableViewerCourse=({recordChanges,TextString})=>{
 
     const onFirstLoad=async()=>{
         try{
-        console.log(recordChanges);
         const response=await axios.get("http://localhost:5000/api/v1/course");
         setData(response.data.courses);
-        console.log(response);
         }catch(error){
             showingError(error.response.data.message);
             console.log(error);
@@ -61,21 +59,17 @@ function wait(ms) {
   
 const onUpdateCourse=async()=>{
     try{
-        console.log(isSelectedToEdit);
-        console.log(IDShowing);
+
         const response=await axios.put(`http://localhost:5000/api/v1/course/${IDShowing}`,isSelectedToEdit);
-        console.log(response.data);
         onFirstLoad();
+        showingError("updated successfully");
     }catch(error){
         showingError(error.response.data.message);
-        console.log(error);
     }
 }
 const onAddSection=async()=>{
  try{
-    console.log(AddedSection);
     const response=await axios.post(`http://localhost:5000/api/v1/section/${IDShowing}`,AddedSection);
-    console.log(response.data);
 
 
  }catch(error){
@@ -85,24 +79,21 @@ const onAddSection=async()=>{
 }
 const onShowSection=async()=>{
     try{
-        console.log(IDShowSection);
         const response = await axios.get(`http://localhost:5000/api/v1/section/${IDShowSection}`);
         setSectionRelated(response.data.sections);
     }catch(err){
         showingError(err.response.data.message);
-        console.log(err);
     }
 }
-const onDeleteCourse=async()=>{
+const onDeleteCourse=async(el)=>{
     try{
         if(window.confirm('Are you sure to delete this')){
-        const response=await axios.delete(`http://localhost:5000/api/v1/course/${IDShowing}`);
-        console.log(IDShowing," ",response.data);
+        const response=await axios.delete(`http://localhost:5000/api/v1/course/${el}`);
         onFirstLoad();
+        showingError("deleted successfully");
         }
     }catch(err){
         showingError(err.response.data.message);
-        console.log(err);
     }
 }
     useEffect(()=>{
@@ -132,8 +123,7 @@ const onDeleteCourse=async()=>{
                         setIDShowing(el.course_id);
                     }}>Edit</UpdateBtn>
                     <DelBtn onClick={()=>{
-                        setIDShowing(el.course_id);
-                        onDeleteCourse();
+                        onDeleteCourse(el.course_id);
                     }}>Delete</DelBtn>
                     <UpdateBtn onClick={()=>{
                        setIDShowSection(el.course_id);

@@ -38,11 +38,12 @@ const NavBar = ({role}) => {
   //   }, [])
   return (
     <Stynav>
-      <Label><Link style={{ textDecoration: "none", color: "black" }} to="/">Student</Link></Label>
+      <Label><Link style={{ textDecoration: "none", color: "black" }} to="/student">Student</Link></Label>
       <Label><Link style={{ textDecoration: "none", color: "black" }} to="/lectures">Lectures</Link></Label>
       {role === "Admin" && <> 
       <Label><Link style={{ textDecoration: "none", color: "black" }} to="/courses">Courses</Link></Label>
-      <Label><Link style={{ textDecoration: "none", color: "black" }} to="/attendantReport">Attendant-tracker</Link></Label>
+      <Label><Link style={{ textDecoration: "none", color: "black" }} to="/attendStatus">Attendant-Status</Link></Label>
+      <Label><Link style={{ textDecoration: "none", color: "black" }} to="/inst">Instructor</Link></Label>
       </>
       }
 

@@ -27,12 +27,8 @@ const CoursePage = () => {
       const response=await axios.post("http://localhost:5000/api/v1/course",
       {id,title,dept_name,book}
       );
-      console.log(response.data.success);
       setDummyState((prev)=>prev+1);
-      console.log(dummyState);
     }catch(err){
-      console.log(err);
-      console.log({id,title,dept_name,book});
       showingError(err.response.data.message);
     }
   }

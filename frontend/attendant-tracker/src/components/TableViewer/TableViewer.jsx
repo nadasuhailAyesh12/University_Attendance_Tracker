@@ -38,36 +38,29 @@ const TableViewer = ({ mostCommit,WhichSection,TextString,course_id,dept_name,se
          }
     };
     const showingError = (str) => {
-        toast(str.message);
+        toast(str);
     }
     const onFetchUpdate = async () => {
         const { id, first_name, middle_initial, middle_final, final_name, dept_name, location } = isSelectedToEdit;
         const ChoosenId = oldId;
-        console.log(ChoosenId);
-        console.log("FIRST_NAME:",first_name);
         try{
         const res = await axios.put(`http://localhost:5000/api/v1/student/${ChoosenId}`, {ID:id, first_name, middle_initial, middle_final, final_name, dept_name, location });
-        console.log(oldId);
-        console.log(isSelectedToEdit);
-        console.log(res.data);
+        showingError("Updated Successfully");
         }catch(err){
             showingError(err.response.data.message);
         }
     }
-    console.log(LectureId);
     const onAddAttendance = async () => {
         try{
         const res = await axios.post(`http://localhost:5000/api/v1/student/attend/${course_id}/${sec_id}/${IdtoAdd}`, { lecture_id: LectureId });
-        console.log(res);
+        showingError("added Successfully");
         }catch(err){
             showingError(err.response.data.message);
         }
     }
     const bringMostCommit=async()=>{
-        console.log(`http://localhost:5000/api/v1/student/attend/${course_id}/${sec_id}`);
         try{
         const res=await axios.get(`http://localhost:5000/api/v1/student/attend/${course_id}/${sec_id}`);;
-        console.log(res.data);
         setData(res.data.commitedStudents);
         }catch(err){
             showingError(err.response.data.message);
@@ -77,12 +70,9 @@ const TableViewer = ({ mostCommit,WhichSection,TextString,course_id,dept_name,se
         const fetchData = async () => {
             try {
                 const response = await axios.get(`http://localhost:5000/api/v1/student/${dept_name}/${course_id}/${sec_id}`);
-                console.log("First Load is Here")
                 setData(response.data.students);
-                console.log(sec_id);
             } catch (error) {
                 showingError(error.response.data.message);
-                console.log(error);
             }
         };
 
@@ -92,12 +82,9 @@ const TableViewer = ({ mostCommit,WhichSection,TextString,course_id,dept_name,se
         const fetchData = async () => {
             try {
                 const response = await axios.get(`http://localhost:5000/api/v1/student`);
-                console.log("First Load is Here")
                 setData(response.data.students);
-                console.log(sec_id);
             } catch (error) {
                 showingError(error.response.data.message);
-                console.log(error);
             }
         };
 
@@ -106,10 +93,9 @@ const TableViewer = ({ mostCommit,WhichSection,TextString,course_id,dept_name,se
     const onSearch=async()=>{
         try{
         const response=await axios.get(`http://localhost:5000/api/v1/student/search/${TextString}`);
-        setData([response.data.student])
+        setData(response.data.student);
         }catch(error){
             showingError(error.response.data.message);
-            console.log(error);
         }
     }
     // const getAllStd=async()=>{
@@ -123,7 +109,6 @@ const TableViewer = ({ mostCommit,WhichSection,TextString,course_id,dept_name,se
             setData(response.data.uncommitedStudents);
         }catch(error){
             showingError(error.response.data.message);
-            console.log(error);
         }
     }
     const closeUpdateAdd=()=>{
@@ -147,15 +132,14 @@ const TableViewer = ({ mostCommit,WhichSection,TextString,course_id,dept_name,se
     const onDeleteRecord=async(id)=>{
         try{
             if(window.confirm('Are you sure to delete this')){
-            console.log(id);
         const res=await axios.delete(`http://localhost:5000/api/v1/student/${id}`);
         console.log(res.data);
+        showingError("deleting successfully");
         if(SearchParams===0){
             onFirstLoading();
         }else{
         onFirstLoad();
         }
-        console.log(data);
         }
         }catch(error){
             showingError(error.response.data.message);
@@ -164,7 +148,6 @@ const TableViewer = ({ mostCommit,WhichSection,TextString,course_id,dept_name,se
     }
     useEffect(()=>{
         const fetch = async () => {
-            console.log(SearchParams);
             if(TextString==="" && SearchParams===0){
                 onFirstLoading();
             }
@@ -197,7 +180,6 @@ const TableViewer = ({ mostCommit,WhichSection,TextString,course_id,dept_name,se
                     openPopup();
                     setOldId(el.id);
                     setIsSelectedToEdit(el);
-                    console.log(el);
 
                 }}>Edit</UpdateBtn>
                 <DelBtn onClick={() =>{//alert("are you sure");
@@ -216,10 +198,8 @@ const TableViewer = ({ mostCommit,WhichSection,TextString,course_id,dept_name,se
                         link.setAttribute('download', 'file.xls');
                         document.body.appendChild(link);
                         link.click();
-                        console.log(response);
                       }catch(error){
                         showingError(error.message);
-                        console.log(error);
                       }
                 }}>Export Report</UpdateBtn>
                 <UpdateBtn onClick={()=>{
@@ -239,7 +219,6 @@ const TableViewer = ({ mostCommit,WhichSection,TextString,course_id,dept_name,se
                     setIsSelectedToEdit((prev) => {
                         const p = prev;
                         p.ID = e.target.value;
-                        console.log(p);
                         return p;
                     });
                 }} />
@@ -249,7 +228,6 @@ const TableViewer = ({ mostCommit,WhichSection,TextString,course_id,dept_name,se
                         setIsSelectedToEdit((prev) => {
                             const p = prev;
                             p.first_name = e.target.value;
-                            console.log(p);
                             return p;
                         });
                     }}
@@ -259,7 +237,6 @@ const TableViewer = ({ mostCommit,WhichSection,TextString,course_id,dept_name,se
                     setIsSelectedToEdit((prev) => {
                         const p = prev;
                         p.middle_initial = e.target.value;
-                        console.log(p);
                         return p;
                     });
                 }} />
@@ -268,7 +245,6 @@ const TableViewer = ({ mostCommit,WhichSection,TextString,course_id,dept_name,se
                     setIsSelectedToEdit((prev) => {
                         const p = prev;
                         p.middle_final = e.target.value;
-                        console.log(p);
                         return p;
                     });
                 }} />
@@ -277,7 +253,6 @@ const TableViewer = ({ mostCommit,WhichSection,TextString,course_id,dept_name,se
                     setIsSelectedToEdit((prev) => {
                         const p = prev;
                         p.final_name = e.target.value;
-                        console.log(p);
                         return p;
                     });
                 }} />
@@ -286,7 +261,6 @@ const TableViewer = ({ mostCommit,WhichSection,TextString,course_id,dept_name,se
                     setIsSelectedToEdit((prev) => {
                         const p = prev;
                         p.gender = e.target.value;
-                        console.log(p);
                         return p;
                     });
                 }} />
@@ -295,7 +269,6 @@ const TableViewer = ({ mostCommit,WhichSection,TextString,course_id,dept_name,se
                     setIsSelectedToEdit((prev) => {
                         const p = prev;
                         p.location = e.target.value;
-                        console.log(p);
                         return p;
                     });
                 }} />
@@ -304,7 +277,6 @@ const TableViewer = ({ mostCommit,WhichSection,TextString,course_id,dept_name,se
                     setIsSelectedToEdit((prev) => {
                         const p = prev;
                         p.dept_name = e.target.value;
-                        console.log(p);
                         return p;
                     });
                 }} />
@@ -322,7 +294,6 @@ const TableViewer = ({ mostCommit,WhichSection,TextString,course_id,dept_name,se
                 }}/>
                 <UpdateBtn  onClick={async()=>{
                     try{
-                        console.log({course_id,sec_id,UpdateAttend,lectureUpdateId})
                         const response=await axios.get(`http://localhost:5000/api/v1/file/updateStudentReport/${course_id}/${sec_id}/${UpdateAttend}/${lectureUpdateId}`,{responseType:'blob'});
                         const url = window.URL.createObjectURL(new Blob([response.data]));
                         const link = document.createElement('a');
@@ -330,7 +301,7 @@ const TableViewer = ({ mostCommit,WhichSection,TextString,course_id,dept_name,se
                         link.setAttribute('download', 'file.xls');
                         document.body.appendChild(link);
                         link.click();
-                        console.log(response);
+                        showingError("attendance updated successfully");
                         // showingError(response.data.message)
                     }catch(error){
                         showingError(error.response.data.message);
