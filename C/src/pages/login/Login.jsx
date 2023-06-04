@@ -49,11 +49,10 @@ const Login = ({role,setRole}) => {
           />
           <Label htmlFor="password">Password</Label>
           <StyInput placeholder="Enter your password"
-            type="text"
+            type="password"
             id="name"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            type="password"
 
           />
           {LoginError && <Label style={{ color: "#8b0000" }}>Password or Id not correct</Label>}
