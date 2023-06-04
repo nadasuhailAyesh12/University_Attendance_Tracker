@@ -67,6 +67,8 @@ Then after that, we make reduction we reduce our ERD to a schema diagram,we use 
 
 thar every relation is in good form 
 
+## [Schema diagram](https://drawsql.app/teams/attendence-traker/diagrams/attendance-tracker):
+
 this is our DDL create tables:
 
 ## [DDlTables](https://drive.google.com/file/d/1WvmDiDvG02LfUO2hlLyl8KCX0U472kEW/view?usp=sharing)
