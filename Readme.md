@@ -24,7 +24,6 @@ Create a folder to clone the repo on it then open the command window or git pash
 ```
                2.  SEEDER_URI=postgres://yourusername:yourpassword@localhost:5432/postgres
 ```
-
 2. save changes to it 
 
 <!---->
@@ -45,11 +44,14 @@ Second Running the frontend :ballot-box-with-check:
 
 open another cmd cd  the repo that you have cloned then:
 
-1 . `cd  frontend `
+1 . `cd  client  `
 
   run  `npm i ` to ensure to install dependencies it will take a couple of minutes please wait till it finishes
+  
+2  . run  `npm start  `Happy hacking!
 
-2  . run  `npm start  `Happy hacking! 🎀
+ nice work!  to test the functions as Administrator login with the password  NORAn$frte and ID 320200629
+  to test the functions as a normal user go to sign up create an account and enjoy the journey 🎀
 
 ***
 
@@ -65,7 +67,7 @@ Then after that, we make reduction we reduce our ERD to a schema diagram,we use 
 
 thar every relation is in good form 
 
-this is our DDL create tables  :arrow-down:
+this is our DDL create tables:
 
 ## [DDlTables](https://drive.google.com/file/d/1WvmDiDvG02LfUO2hlLyl8KCX0U472kEW/view?usp=sharing)
 
