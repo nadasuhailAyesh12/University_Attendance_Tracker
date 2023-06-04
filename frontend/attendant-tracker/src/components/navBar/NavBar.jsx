@@ -40,9 +40,9 @@ const NavBar = ({role}) => {
     <Stynav>
       <Label><Link style={{ textDecoration: "none", color: "black" }} to="/student">Student</Link></Label>
       <Label><Link style={{ textDecoration: "none", color: "black" }} to="/lectures">Lectures</Link></Label>
+      <Label><Link style={{ textDecoration: "none", color: "black" }} to="/attendStatus">Attendant-Status</Link></Label>
       {role === "Admin" && <> 
       <Label><Link style={{ textDecoration: "none", color: "black" }} to="/courses">Courses</Link></Label>
-      <Label><Link style={{ textDecoration: "none", color: "black" }} to="/attendStatus">Attendant-Status</Link></Label>
       <Label><Link style={{ textDecoration: "none", color: "black" }} to="/inst">Instructor</Link></Label>
       </>
       }
