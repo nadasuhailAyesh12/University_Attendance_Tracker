@@ -71,11 +71,11 @@ this is our DDL create tables:
 
 ## [DDlTables](https://drive.google.com/file/d/1WvmDiDvG02LfUO2hlLyl8KCX0U472kEW/view?usp=sharing)
 
-## fake Data
-
  of course, to ensure everything is working well you can try our queries on de Beaver or in your SQL shell and insure everything is correct here is our query sample
 
-## query sample
+## [query sample](https://drive.google.com/file/d/1-PpTgoXtmdQdOTb_VzLyQn_j1bFVx4Yd/view?usp=sharing)
+
+## fake Data
 
 ***
 
