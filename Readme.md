@@ -44,7 +44,7 @@ Second Running the frontend :ballot-box-with-check:
 
 open another cmd cd  the repo that you have cloned then:
 
-1 . `cd  client  `
+1 . `cd  frontend then cd attendant-tracker  `
 
   run  `npm i ` to ensure to install dependencies it will take a couple of minutes please wait till it finishes
   
