@@ -70,7 +70,7 @@ const registerStudentAttendance = async (lecture_id, ID, sec_id, course_id) => {
 
 const getStudents = async (dept_name, course_id, sec_id) => {
     const getStudentsQuery = new PreparedStatement({
-        name: 'getStudentQuery', text: `select ID,first_name,middle_initial,middle_final,final_name,gender,location from student natural join takes
+        name: 'getStudentQuery', text: `select * from student natural join takes
         where dept_name ilike $1 and course_id ilike $2 and sec_id=$3`,
         values: [dept_name, course_id, sec_id]
     })

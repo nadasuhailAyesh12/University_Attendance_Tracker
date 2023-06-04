@@ -8,7 +8,7 @@ const addInstructor = async (id, name, dept_name, role) => {
 
 const updateInstructor = async (oldID, name, dept_name, role, ID) => {
     const updateQuery = new PreparedStatement({
-        name: 'instructor', text: "update instructor set ID=$5,name=$2,dept_name=$3,role=$4 where ID=$1"
+        name: 'instructorUpdate', text: "update instructor set ID=$5,name=$2,dept_name=$3,role=$4 where ID=$1"
     })
     updateQuery.values = [oldID, name, dept_name, role, ID];
     await db.none(updateQuery);
@@ -16,7 +16,7 @@ const updateInstructor = async (oldID, name, dept_name, role, ID) => {
 
 const deleteInstructor = async (id) => {
     const deleteQuery = new PreparedStatement({
-        name: 'instructor', text: "delete from instructor where ID=$1"
+        name: 'instructorDelete', text: "delete from instructor where ID=$1"
     })
     deleteQuery.values = [id];
     await db.none(deleteQuery);
@@ -24,7 +24,7 @@ const deleteInstructor = async (id) => {
 
 const searchInstructor = async (name) => {
     const searchQuery = new PreparedStatement({
-        name: 'instructor', text: 'SELECT * FROM instructor WHERE name ILIKE $1 '
+        name: 'instructorSearch', text: 'SELECT * FROM instructor WHERE name ILIKE $1 '
     })
     searchQuery.values = [`%${name}%`]
     const instructors = await db.any(searchQuery);

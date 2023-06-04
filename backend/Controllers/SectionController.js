@@ -13,7 +13,7 @@ const addSectionandLecture = async (req, res, next) => {
         })
     }
     catch (error) {
-        // return next(error)
+        return next(error)
         console.log(error);
     }
 }
