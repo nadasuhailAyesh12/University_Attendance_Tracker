@@ -43,7 +43,7 @@ WHERE EXISTS (
 
 const search = async (argument) => {
     if (isNaN(argument)) {
-        const searchQuery = new PreparedStatement({ name: 'getStudentByID', text: "select * from student where CONCAT(first_name, ' ', middle_initial,' ',middle_final,' ',final_name) iLIKE $1 limit 10 ;" });
+        const searchQuery = new PreparedStatement({ name: 'searchName', text: "select * from student where CONCAT(first_name, ' ', middle_initial,' ',middle_final,' ',final_name) iLIKE $1 limit 10 ;" });
         const user = await db.any(searchQuery, [`%${argument}%`]);
         return user;
     }
